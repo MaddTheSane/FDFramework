@@ -292,7 +292,7 @@ FDHIDUsageToDevice gFDHIDKeyboardUsageMap[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static const UInt8  sFDHIDSpecialKey[] =
+static const UInt8     gInSpecialKey[] =
 {
     eFDHIDKeyUpArrow,       eFDHIDKeyDownArrow,     eFDHIDKeyLeftArrow,     eFDHIDKeyRightArrow,
     0,                      0,                      0,                      0,
@@ -316,7 +316,7 @@ static const UInt8  sFDHIDSpecialKey[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static const UInt8  sFDHIDSpecialKeyFn[] =
+static const UInt8     gInSpecialKeyFn[] =
 {
     eFDHIDKeyPageUp,        eFDHIDKeyPageDown,      eFDHIDKeyHome,          eFDHIDKeyEnd,
     eFDHIDKeyF1,            eFDHIDKeyF2,            eFDHIDKeyF3,            eFDHIDKeyF4,
@@ -340,7 +340,7 @@ static const UInt8  sFDHIDSpecialKeyFn[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static const UInt8  sFDHIDInNumPadKey[] =
+static const UInt8     gInNumPadKey[] = 
 {	
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
@@ -477,15 +477,15 @@ static const UInt8  sFDHIDInNumPadKey[] =
                     {
                         character -= 0xF700;
                         
-                        if (character < FD_SIZE_OF_ARRAY (sFDHIDSpecialKey))
+                        if (character < FD_SIZE_OF_ARRAY (gInSpecialKey))
                         {
                             if (mFnKeyIsDown == YES)
                             {
-                                keyEvent.mButton = sFDHIDSpecialKeyFn[character];
+                                keyEvent.mButton = gInSpecialKeyFn[character];
                             }
                             else
                             {
-                                keyEvent.mButton = sFDHIDSpecialKey[character];
+                                keyEvent.mButton = gInSpecialKey[character];
                             }
                             
                             [self pushEvent: &keyEvent];
@@ -497,11 +497,11 @@ static const UInt8  sFDHIDInNumPadKey[] =
                         {
                             UInt16 keyPad = [event keyCode];
                             
-                            if (keyPad < FD_SIZE_OF_ARRAY (sFDHIDInNumPadKey))
+                            if (keyPad < FD_SIZE_OF_ARRAY (gInNumPadKey))
                             {
-                                if (sFDHIDInNumPadKey[keyPad] != 0)
+                                if (gInNumPadKey[keyPad] != 0)
                                 {
-                                    keyEvent.mButton = sFDHIDInNumPadKey[keyPad];
+                                    keyEvent.mButton = gInNumPadKey[keyPad];
                                     
                                     [self pushEvent: &keyEvent];
                                     break;
@@ -621,21 +621,21 @@ void FDHIDKeyboard_FnHandler (id device, unsigned int keycode, IOHIDValueRef pVa
     
     [device setFnKeyState: (IOHIDValueGetIntegerValue (pValue) != 0)];
     
-    for (uint32_t i = 0; i < FD_SIZE_OF_ARRAY (sFDHIDSpecialKey); ++i)
+    for (uint32_t i = 0; i < FD_SIZE_OF_ARRAY (gInSpecialKey); ++i)
     {
-        if (sFDHIDSpecialKey[i] != 0)
+        if (gInSpecialKey[i] != 0)
         {
-            keyEvent.mButton = sFDHIDSpecialKey[i];
+            keyEvent.mButton = gInSpecialKey[i];
             
             [device pushEvent: &keyEvent];
         }
     }
     
-    for (uint32_t i = 0; i < FD_SIZE_OF_ARRAY (sFDHIDSpecialKeyFn); ++i)
+    for (uint32_t i = 0; i < FD_SIZE_OF_ARRAY (gInSpecialKeyFn); ++i)
     {
-        if (sFDHIDSpecialKeyFn[i] != 0)
+        if (gInSpecialKeyFn[i] != 0)
         {
-            keyEvent.mButton = sFDHIDSpecialKeyFn[i];
+            keyEvent.mButton = gInSpecialKeyFn[i];
             
             [device pushEvent: &keyEvent];
         }
