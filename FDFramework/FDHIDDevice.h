@@ -13,6 +13,8 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FDHIDDevice : NSObject
 
 @property (readonly) SInt32 vendorId;
@@ -23,8 +25,10 @@
 @property (readonly, copy) NSString *deviceType;
 
 @property (readonly) BOOL hasActuator;
-@property (readonly, retain) FDHIDActuator *actuator;
+@property (readonly, retain, nullable) FDHIDActuator *actuator;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 //----------------------------------------------------------------------------------------------------------------------------

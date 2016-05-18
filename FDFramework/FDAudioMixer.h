@@ -13,9 +13,9 @@
 
 @interface FDAudioMixer : NSObject
 
-+ (FDAudioMixer*) sharedAudioMixer;
++ (nullable FDAudioMixer*) sharedAudioMixer;
 
-- (instancetype) init;
+- (nullable instancetype) init;
 
 - (void) start;
 - (void) stop;

@@ -11,6 +11,8 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FDGLScreenshot : FDScreenshot
 
 - (instancetype) init UNAVAILABLE_ATTRIBUTE;
@@ -23,5 +25,7 @@
 + (BOOL) writeToTIFF: (NSString*) path;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 //----------------------------------------------------------------------------------------------------------------------------

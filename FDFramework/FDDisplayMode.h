@@ -11,6 +11,8 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FDDisplayMode : NSObject
 
 @property (readonly) NSUInteger width;
@@ -22,9 +24,11 @@
 
 @property (readonly, copy) NSString *description;
 
-- (BOOL) isEqualTo: (FDDisplayMode*) object;
+- (BOOL) isEqualTo: (nullable FDDisplayMode*) object;
 - (NSComparisonResult) compare: (FDDisplayMode*) rhs;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 //----------------------------------------------------------------------------------------------------------------------------

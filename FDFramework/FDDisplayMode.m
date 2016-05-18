@@ -182,6 +182,10 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 
 - (BOOL) isEqualTo: (FDDisplayMode*) rhs
 {
+    if (!rhs)
+	{
+        return NO;
+    }
     return (self.width == rhs.width) &&
            (self.height == rhs.height) &&
            (self.bitsPerPixel == rhs.bitsPerPixel) &&
@@ -193,6 +197,11 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 
 - (NSComparisonResult) compare: (FDDisplayMode*) rhs
 {
+    if ([self isEqualTo:rhs])
+    {
+        return NSOrderedSame;
+    }
+
 	const NSUInteger    lhsArea		= self.width * self.height;
 	const NSUInteger    rhsArea     = rhs.width * rhs.height;
 	NSComparisonResult  result		= NSOrderedDescending;

@@ -10,13 +10,16 @@
 #import "FDDisplay.h"
 
 #import <Cocoa/Cocoa.h>
+
 #ifndef NS_SWIFT_NAME
 #define NS_SWIFT_NAME(...)
 #endif
 
+NS_ASSUME_NONNULL_BEGIN
+
 //----------------------------------------------------------------------------------------------------------------------------
 
-typedef void (*FDResizeHandler) (id fdView, void* pContext);
+typedef void (*FDResizeHandler) (id fdView, void*__nullable pContext);
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -28,7 +31,7 @@ typedef void (*FDResizeHandler) (id fdView, void* pContext);
 - (instancetype) initWithContentRect: (NSRect) rect;
 - (instancetype) initWithContentRect: (NSRect) rect samples: (NSUInteger) samples NS_DESIGNATED_INITIALIZER;
 
-- (void) setResizeHandler: (FDResizeHandler) pResizeHandler forContext: (void*) pContext;
+- (void) setResizeHandler: (nullable FDResizeHandler) pResizeHandler forContext: (nullable void*) pContext;
 
 - (void) centerForDisplay: (FDDisplay*) display;
 
@@ -42,5 +45,7 @@ typedef void (*FDResizeHandler) (id fdView, void* pContext);
 - (void) endFrame;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 //----------------------------------------------------------------------------------------------------------------------------

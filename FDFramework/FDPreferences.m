@@ -168,15 +168,7 @@ static FDPreferences*   sFDPreferencesInstance  = nil;
 
 - (NSArray*) arrayForKey: (NSString*) key
 {   
-    NSArray*    array   = nil;
-    id          object  = [[NSUserDefaults standardUserDefaults] objectForKey: key];
-    
-    if ([object isKindOfClass: [NSArray class]] == YES)
-    {
-        array = object;
-    }
-    
-    return array;
+    return [[NSUserDefaults standardUserDefaults] arrayForKey: key];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------

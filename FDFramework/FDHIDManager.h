@@ -140,7 +140,7 @@ typedef struct
 + (FDHIDManager*) sharedHIDManager;
 + (void) checkForIncompatibleDevices;
 
-- (void) setDeviceFilter: (NSArray*) deviceTypes;
+- (void) setDeviceFilter: (nullable NSArray<NSString*>*) deviceTypes;
 @property (readonly, copy) NSArray<FDHIDDevice *> *devices;
 - (const FDHIDEvent*) nextEvent;
 

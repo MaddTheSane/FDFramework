@@ -9,6 +9,18 @@
 import Foundation
 import FruitzOfDojo
 
+extension FDDisplayMode: Comparable {
+    
+}
+
 public func ==(lhs: FDDisplayMode, rhs: FDDisplayMode) -> Bool {
     return lhs.isEqualTo(rhs)
+}
+
+public func <(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
+    return lhs.compare(rhs) == .OrderedDescending
+}
+
+public func >(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
+    return lhs.compare(rhs) == .OrderedAscending
 }

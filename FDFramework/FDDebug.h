@@ -12,12 +12,14 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-typedef BOOL (*FDDebugAssertHandler) (const char* pFile, unsigned int line, const char* pFormat, ...);
-typedef void (*FDDebugErrorHandler) (const char* pFormat, ...);
-typedef void (*FDDebugExceptionHandler) (const char* pFormat, ...);
-typedef void (*FDDebugLogHandler) (const char* pFormat, ...);
+typedef BOOL (*FDDebugAssertHandler) (const char* __null_unspecified pFile, unsigned int line, const char* __null_unspecified pFormat, ...) __printflike(3, 4);
+typedef void (*FDDebugErrorHandler) (const char* __null_unspecified pFormat, ...) __printflike(1, 2);
+typedef void (*FDDebugExceptionHandler) (const char* __null_unspecified pFormat, ...) __printflike(1, 2);
+typedef void (*FDDebugLogHandler) (const char* __null_unspecified pFormat, ...) __printflike(1, 2);
 
 //----------------------------------------------------------------------------------------------------------------------------
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface FDDebug : NSObject
 
@@ -44,15 +46,17 @@ typedef void (*FDDebugLogHandler) (const char* pFormat, ...);
 - (void) exceptionWithFormat: (NSString*) format, ... NS_FORMAT_FUNCTION(1,2);
 - (void) exceptionWithFormat: (NSString*) format arguments: (va_list) argList;
 
-- (BOOL) assert: (NSString*) file line: (NSUInteger) line format: (NSString*) format, ... NS_FORMAT_FUNCTION(1,4);
+- (BOOL) assert: (NSString*) file line: (NSUInteger) line format: (NSString*) format, ... NS_FORMAT_FUNCTION(3,4);
 - (BOOL) assert: (NSString*) file line: (NSUInteger) line format: (NSString*) format arguments: (va_list) argList;
 
 @end
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-FD_EXTERN void    FDLog (NSString* format, ...);
-FD_EXTERN void    FDError (NSString* format, ...);
+FD_EXTERN void    FDLog (NSString* format, ...) NS_FORMAT_FUNCTION(1,2);
+FD_EXTERN void    FDError (NSString* format, ...) NS_FORMAT_FUNCTION(1,2);
+
+NS_ASSUME_NONNULL_END
 
 //----------------------------------------------------------------------------------------------------------------------------
 
