@@ -10,6 +10,7 @@
 #import "FDView.h"
 #import "FDViewInternal.h"
 #import "FDWindow.h"
+#import "FDWindowInternal.h"
 #import "FDDebug.h"
 
 #import <Cocoa/Cocoa.h>
@@ -22,14 +23,6 @@
 @interface FDView()
 
 - (void) initGrowBoxTexture;
-- (void) drawGrowbox;
-
-@property (readwrite, strong) NSOpenGLContext *openGLContext;
-
-- (void) setResizeHandler: (FDResizeHandler) pResizeHandler forContext: (void*) pContext;
-- (void) onResizeView: (NSNotification*) notification;
-
-@property (readonly, copy) NSBitmapImageRep *bitmapRepresentation;
 
 @end
 
@@ -48,6 +41,7 @@
     BOOL                mGrowBoxIsInitialized;
 }
 @synthesize openGLContext = mOpenGLContext;
+@synthesize cursor = mCursor;
 
 - (instancetype)initWithFrame:(NSRect) frameRect
 {
@@ -143,13 +137,6 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (NSCursor*) cursor
-{
-    return mCursor;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
 - (void) resetCursorRects
 {
     [self addCursorRect: self.bounds cursor: self.cursor];
@@ -220,13 +207,6 @@
         
         mOpenGLContext = [openGLContext retain];
     }
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSOpenGLContext*) openGLContext
-{
-    return mOpenGLContext;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------

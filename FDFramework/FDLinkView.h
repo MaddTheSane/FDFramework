@@ -11,10 +11,12 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
+IB_DESIGNABLE
 @interface FDLinkView : NSView
 
-- (void) setURL: (NSURL*) url;
-- (void) setURL: (NSURL*) url displayString: (NSString*) displayString;
+IBInspectable
+@property (retain, nullable) NSURL *url;
+- (void) setURL: (nullable NSURL*) url displayString: (nullable NSString*) displayString;
 
 @end
 

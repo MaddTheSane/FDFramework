@@ -30,6 +30,7 @@
     NSDictionary* 	mFontAttributesRed;
     BOOL			mMouseIsDown;
 }
+@synthesize url = mURL;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -64,7 +65,7 @@
     
     NSArray* objects = @[[NSFont systemFontOfSize: [NSFont systemFontSize]],
                         color,
-                        @(NSSingleUnderlineStyle)];
+                        @(NSUnderlineStyleSingle)];
     
     return [[NSDictionary alloc] initWithObjects: objects forKeys: keys];
 }

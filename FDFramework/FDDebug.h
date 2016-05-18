@@ -34,17 +34,17 @@ typedef void (*FDDebugLogHandler) (const char* pFormat, ...);
 @property FDDebugExceptionHandler exceptionHandler;
 @property FDDebugLogHandler logHandler;
 
-- (void) logWithFormat: (NSString*) format, ...;
+- (void) logWithFormat: (NSString*) format, ... NS_FORMAT_FUNCTION(1,2);
 - (void) logWithFormat: (NSString*) format arguments: (va_list) argList;
 
-- (void) errorWithFormat: (NSString*) format, ...;
+- (void) errorWithFormat: (NSString*) format, ... NS_FORMAT_FUNCTION(1,2);
 - (void) errorWithFormat: (NSString*) format arguments: (va_list) argList;
 
 - (void) exception: (NSException*) exception;
-- (void) exceptionWithFormat: (NSString*) format, ...;
+- (void) exceptionWithFormat: (NSString*) format, ... NS_FORMAT_FUNCTION(1,2);
 - (void) exceptionWithFormat: (NSString*) format arguments: (va_list) argList;
 
-- (BOOL) assert: (NSString*) file line: (NSUInteger) line format: (NSString*) format, ...;
+- (BOOL) assert: (NSString*) file line: (NSUInteger) line format: (NSString*) format, ... NS_FORMAT_FUNCTION(1,4);
 - (BOOL) assert: (NSString*) file line: (NSUInteger) line format: (NSString*) format arguments: (va_list) argList;
 
 @end

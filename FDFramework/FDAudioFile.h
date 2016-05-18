@@ -13,9 +13,12 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FDAudioFile : NSObject
 
-- (instancetype) initWithMixer: (FDAudioMixer*) mixer NS_DESIGNATED_INITIALIZER;
+- (instancetype) init NS_UNAVAILABLE;
+- (nullable instancetype) initWithMixer: (nullable FDAudioMixer*) mixer NS_DESIGNATED_INITIALIZER;
 
 @property float volume;
 
@@ -32,3 +35,5 @@
 @end
 
 //----------------------------------------------------------------------------------------------------------------------------
+
+NS_ASSUME_NONNULL_END

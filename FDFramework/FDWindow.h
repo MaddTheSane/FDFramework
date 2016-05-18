@@ -32,7 +32,7 @@ typedef void (*FDResizeHandler) (id fdView, void* pContext);
 @property (nonatomic, getter=isCursorVisible) BOOL cursorVisible;
 @property BOOL vsync;
 
-@property (readonly, strong) NSOpenGLContext *openGLContext;
+@property (readonly, retain) NSOpenGLContext *openGLContext;
 
 @property (readonly, getter=isFullscreen) BOOL fullscreen;
 

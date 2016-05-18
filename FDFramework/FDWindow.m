@@ -12,6 +12,7 @@
 #import "FDDisplayMode.h"
 #import "FDDebug.h"
 #import "FDView.h"
+#import "FDWindowInternal.h"
 
 #import <Cocoa/Cocoa.h>
 
@@ -19,17 +20,6 @@
 
 #define FD_MINI_ICON_WIDTH          ( 128 )
 #define FD_MINI_ICON_HEIGHT         ( 128 )
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@interface FDView ()
-
-- (void) setResizeHandler: (FDResizeHandler) pResizeHandler forContext: (void*) pContext;
-- (void) setOpenGLContext: (NSOpenGLContext*) openGLContext;
-@property (readonly, copy) NSBitmapImageRep *bitmapRepresentation;
-- (void) drawGrowbox;
-
-@end
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -89,7 +79,7 @@
         [self disableScreenUpdatesUntilFlush];
         [self setCursorVisible: NO];
         
-        [mView setOpenGLContext: glContext];
+        mView.openGLContext = glContext;
         [mView setNeedsDisplay: YES];
         
         [glContext release];
@@ -132,11 +122,11 @@
         mView = [[FDView alloc] initWithFrame: rect];
 
         [self initCursor];
-        [self setDocumentEdited: YES];
+        self.documentEdited = YES;
         self.minSize = rect.size;
         self.contentAspectRatio = rect.size;
-        [self setShowsResizeIndicator: NO];
-        [self setAcceptsMouseMovedEvents: YES];
+        self.showsResizeIndicator = NO;
+        self.acceptsMouseMovedEvents = YES;
         self.backgroundColor = [NSColor blackColor];
         self.contentView = mView;
         [self useOptimizedDrawing: NO];
@@ -144,7 +134,7 @@
         
         [self center];
         
-        [mView setOpenGLContext: glContext];
+        mView.openGLContext = glContext;
         
         [glContext release];
         

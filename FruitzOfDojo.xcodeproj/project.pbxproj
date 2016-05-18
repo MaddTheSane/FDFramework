@@ -47,6 +47,7 @@
 		5564787C1CECEE3300ECD01B /* FDViewInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478541CECEE3300ECD01B /* FDViewInternal.h */; };
 		5564787D1CECEE3300ECD01B /* FDWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478551CECEE3300ECD01B /* FDWindow.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5564787E1CECEE3300ECD01B /* FDWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478561CECEE3300ECD01B /* FDWindow.m */; };
+		55F9260A1CED183300145952 /* FDWindowInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F926091CED183300145952 /* FDWindowInternal.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -93,6 +94,7 @@
 		556478551CECEE3300ECD01B /* FDWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDWindow.h; sourceTree = "<group>"; };
 		556478561CECEE3300ECD01B /* FDWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDWindow.m; sourceTree = "<group>"; };
 		5564787F1CECEF9B00ECD01B /* FruitzOfDojo.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = FruitzOfDojo.modulemap; sourceTree = "<group>"; };
+		55F926091CED183300145952 /* FDWindowInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDWindowInternal.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +167,7 @@
 				556478541CECEE3300ECD01B /* FDViewInternal.h */,
 				556478551CECEE3300ECD01B /* FDWindow.h */,
 				556478561CECEE3300ECD01B /* FDWindow.m */,
+				55F926091CED183300145952 /* FDWindowInternal.h */,
 				556478271CECEE1000ECD01B /* FruitzOfDojo.h */,
 				5564787F1CECEF9B00ECD01B /* FruitzOfDojo.modulemap */,
 				556478291CECEE1000ECD01B /* Info.plist */,
@@ -191,6 +194,7 @@
 				556478611CECEE3300ECD01B /* FDDisplay.h in Headers */,
 				556478761CECEE3300ECD01B /* FDPreferences.h in Headers */,
 				556478281CECEE1000ECD01B /* FruitzOfDojo.h in Headers */,
+				55F9260A1CED183300145952 /* FDWindowInternal.h in Headers */,
 				5564785E1CECEE3300ECD01B /* FDDebug.h in Headers */,
 				556478571CECEE3300ECD01B /* FDAudioBuffer.h in Headers */,
 				556478591CECEE3300ECD01B /* FDAudioFile.h in Headers */,

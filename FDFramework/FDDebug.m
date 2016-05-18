@@ -147,7 +147,12 @@ static NSString*        sFDDebugDefaultName = @"";
     else
     {
         NSLog (@"%@An error has occured: %@\n", mLogPrefix, msg);
-        NSRunCriticalAlertPanel (@"An error has occured:", @"%@", nil, nil, nil, msg);
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = @"An error has occured:";
+        alert.informativeText = msg;
+        alert.alertStyle = NSCriticalAlertStyle;
+        [alert runModal];
+        [alert release];
     }
     
     [msg release];
@@ -166,7 +171,7 @@ static NSString*        sFDDebugDefaultName = @"";
         reason = @"Unknown exception!";
     }
     
-    [self exceptionWithFormat: reason];
+    [self exceptionWithFormat: @"%@", reason];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -195,7 +200,11 @@ static NSString*        sFDDebugDefaultName = @"";
     else
     {
         NSLog (@"%@An exception has occured: %@\n", mLogPrefix, msg);
-        NSRunCriticalAlertPanel (@"An exception has occured:", @"%@", nil, nil, nil, msg);
+		NSAlert *alert = [[NSAlert alloc] init];
+		alert.messageText = @"An exception has occured:";
+		alert.informativeText = msg;
+        alert.alertStyle = NSCriticalAlertStyle;
+		[alert runModal];
     }
 }
 
@@ -238,9 +247,17 @@ static NSString*        sFDDebugDefaultName = @"";
             
             NSLog (@"%@%@ (%d): Assertion failed: %@", mLogPrefix, file, (unsigned int) line, msg);
             
-            resume = (NSRunCriticalAlertPanel (@"Assertion failed:", @"%@", @"Resume", @"Crash", nil, dlg) == NSAlertDefaultReturn);
+            NSAlert *alert = [[NSAlert alloc] init];
+            alert.messageText = @"Assertion failed:";
+            alert.informativeText = dlg;
+            [alert addButtonWithTitle:@"Resume"];
+            [alert addButtonWithTitle:@"Crash"];
+            alert.alertStyle = NSCriticalAlertStyle;
+            
+            resume = ([alert runModal] == NSAlertFirstButtonReturn);
             
             [dlg release];
+            [alert release];
         }
     }
     

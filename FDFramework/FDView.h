@@ -11,15 +11,19 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FDView : NSView
 
 - (instancetype) initWithFrame: (NSRect) frameRect;
 
-@property (nonatomic, retain) NSCursor *cursor;
+@property (nonatomic, retain, null_resettable) NSCursor *cursor;
 @property BOOL vsync;
 
-@property (readonly, strong) NSOpenGLContext *openGLContext;
+@property (readonly, nonatomic, retain) NSOpenGLContext *openGLContext;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 //----------------------------------------------------------------------------------------------------------------------------
