@@ -11,19 +11,11 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface FDModifierCheck ()
-
-- (id) init;
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
 @implementation FDModifierCheck
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-+ (BOOL) checkForModifier: (NSUInteger) modifierKeyMask
++ (BOOL) checkForModifier: (NSEventModifierFlags) modifierKeyMask
 {
     BOOL        modifierWasPressed  = NO;    
     CGEventRef  shiftDown           = CGEventCreateKeyboardEvent (NULL, (CGKeyCode) 56, true);
@@ -43,7 +35,7 @@
                                                           inMode: NSDefaultRunLoopMode
                                                          dequeue: YES];
         
-        modifierWasPressed = ([event modifierFlags] & modifierKeyMask) != 0;
+        modifierWasPressed = (event.modifierFlags & modifierKeyMask) != 0;
         
         if ((event == nil) || (modifierWasPressed == YES))
         {
@@ -91,7 +83,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) init
+- (instancetype) init
 {
     self = [super init];
     

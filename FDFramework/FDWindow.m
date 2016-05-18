@@ -26,23 +26,15 @@
 
 - (void) setResizeHandler: (FDResizeHandler) pResizeHandler forContext: (void*) pContext;
 - (void) setOpenGLContext: (NSOpenGLContext*) openGLContext;
-- (NSBitmapImageRep*) bitmapRepresentation;
+@property (readonly, copy) NSBitmapImageRep *bitmapRepresentation;
 - (void) drawGrowbox;
 
 @end
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDWindow : FDWindow
-{
-@private
-    NSImage*            mMiniImage;
-    NSCursor*           mInvisibleCursor;
-    FDView*             mView;
-    FDDisplay*          mDisplay;
-    BOOL                mForceCusorVisible;
-    BOOL                mIsCursorVisible;
-}
+@interface FDWindow ()
+
 
 - (void) initCursor;
 - (void) updateCursor;
@@ -59,30 +51,40 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@implementation _FDWindow
-
-- (id) initForDisplay: (FDDisplay*) display samples: (NSUInteger) samples
+@implementation FDWindow
 {
-    self = [super initWithContentRect: [display frame]
+@private
+    NSImage*            mMiniImage;
+    NSCursor*           mInvisibleCursor;
+    FDView*             mView;
+    FDDisplay*          mDisplay;
+    BOOL                mForceCusorVisible;
+    BOOL                mIsCursorVisible;
+}
+@synthesize cursorVisible = mIsCursorVisible;
+
+- (instancetype) initForDisplay: (FDDisplay*) display samples: (NSUInteger) samples
+{
+    self = [super initWithContentRect: display.frame
                             styleMask: NSBorderlessWindowMask
                               backing: NSBackingStoreBuffered
                                 defer: NO];
     
     if (self != nil)
     {
-        const NSUInteger    bitsPerPixel    = [[display displayMode] bitsPerPixel];
-        const NSRect        frameRect       = [[self contentView] frame];
+        const NSUInteger    bitsPerPixel    = display.displayMode.bitsPerPixel;
+        const NSRect        frameRect       = self.contentView.frame;
         NSOpenGLContext*    glContext       = [self createGLContextWithBitsPerPixel: bitsPerPixel samples: samples];
         
         mView       = [[FDView alloc] initWithFrame: frameRect];
         mDisplay    = [display retain];
         
         [self initCursor];
-        [self setContentView: mView];
-        [self setLevel: CGShieldingWindowLevel()];
+        self.contentView = mView;
+        self.level = CGShieldingWindowLevel();
         [self setOpaque: YES];
         [self setHidesOnDeactivate: YES];
-        [self setBackgroundColor: [NSColor blackColor]];
+        self.backgroundColor = [NSColor blackColor];
         [self setAcceptsMouseMovedEvents: YES];
         [self disableScreenUpdatesUntilFlush];
         [self setCursorVisible: NO];
@@ -98,14 +100,21 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initForDisplay: (FDDisplay*) display
+- (instancetype) initForDisplay: (FDDisplay*) display
 {
     return [self initForDisplay: display samples: 0];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initWithContentRect: (NSRect) rect samples: (NSUInteger) samples
+- (instancetype) initWithContentRect: (NSRect) rect
+{
+    return [self initWithContentRect: rect samples: 0];
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+- (instancetype) initWithContentRect: (NSRect) rect samples: (NSUInteger) samples
 {
     self = [super initWithContentRect: rect
                             styleMask: NSTitledWindowMask |
@@ -117,19 +126,19 @@
     
     if (self != nil)
     {
-        const NSUInteger    bitsPerPixel    = NSBitsPerPixelFromDepth ([[self screen] depth]);
+        const NSUInteger    bitsPerPixel    = NSBitsPerPixelFromDepth (self.screen.depth);
         NSOpenGLContext*    glContext       = [self createGLContextWithBitsPerPixel: bitsPerPixel samples: samples];
         
         mView = [[FDView alloc] initWithFrame: rect];
 
         [self initCursor];
         [self setDocumentEdited: YES];
-        [self setMinSize: rect.size];
-        [self setContentAspectRatio: rect.size];
+        self.minSize = rect.size;
+        self.contentAspectRatio = rect.size;
         [self setShowsResizeIndicator: NO];
         [self setAcceptsMouseMovedEvents: YES];
-        [self setBackgroundColor: [NSColor blackColor]];
-        [self setContentView: mView];
+        self.backgroundColor = [NSColor blackColor];
+        self.contentView = mView;
         [self useOptimizedDrawing: NO];
         [self makeFirstResponder: mView];
         
@@ -193,15 +202,15 @@
 
 - (NSOpenGLContext*) openGLContext
 {
-    return [mView openGLContext];
+    return mView.openGLContext;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 - (void) centerForDisplay: (FDDisplay*) display
 {
-    const NSRect    displayRect = [display frame];
-    const NSRect    windowRect  = [self frame];
+    const NSRect    displayRect = display.frame;
+    const NSRect    windowRect  = self.frame;
     NSPoint         origin;
     
     origin.x = NSMidX (displayRect) - NSWidth (windowRect) * 0.5f;
@@ -212,7 +221,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (NSCursor *) initCursorWithImage: (NSImage *) image
+- (NSCursor *) newCursorWithImage: (NSImage *) image
 {
     NSCursor*  cursor = [[NSCursor alloc] initWithImage: image hotSpot: NSMakePoint( 8.0, 8.0 ) ];
     
@@ -239,16 +248,16 @@
     
     if (isVisible == YES)
     {
-        [mView setCursor: [NSCursor arrowCursor]];
+        mView.cursor = [NSCursor arrowCursor];
     }
     else
     {
-        const NSRect    nsRect      = [self frame];
+        const NSRect    nsRect      = self.frame;
         const CGRect    cgRect      = CGDisplayBounds (CGMainDisplayID ());
         const NSPoint   nsCenter    = NSMakePoint (NSMidX (nsRect), NSMidY (nsRect));
         const CGPoint   cgCenter    = CGPointMake (nsCenter.x, cgRect.size.height - nsCenter.y);
         
-        [mView setCursor: mInvisibleCursor];
+        mView.cursor = mInvisibleCursor;
         
         CGWarpMouseCursorPosition (cgCenter);
     }
@@ -265,23 +274,16 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (BOOL) isCursorVisible
-{
-    return mIsCursorVisible;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
 - (void) setVsync: (BOOL) enabled
 {
-    [mView setVsync: enabled];
+    mView.vsync = enabled;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 - (BOOL) vsync
 {
-    return [mView vsync];
+    return mView.vsync;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -295,18 +297,18 @@
 
 - (void) endFrame
 {
-    if ([self isMiniaturized] == YES)
+    if (self.miniaturized == YES)
     {
         [self drawMiniImage];
     }
     else
     {
-        if ([self isFullscreen] == NO)
+        if (self.fullscreen == NO)
         {
             [mView drawGrowbox];
         }
         
-        CGLFlushDrawable ([[self openGLContext] CGLContextObj]);
+        CGLFlushDrawable (self.openGLContext.CGLContextObj);
     }
 }
 
@@ -342,7 +344,7 @@
 
 - (BOOL) windowShouldClose: (id) sender
 {
-    const BOOL  shouldClose = [self isFullscreen];
+    const BOOL  shouldClose = self.fullscreen;
     
     if (shouldClose == NO)
     {
@@ -443,12 +445,11 @@
     NSGraphicsContext*	graphicsContext	= nil;
     NSImage*            miniImage = [[NSImage alloc] initWithSize: size];
 	
-	[miniImage setFlipped: YES];
-    [miniImage lockFocus];
+    [miniImage lockFocusFlipped:YES];
     
     graphicsContext = [NSGraphicsContext currentContext];
-    [graphicsContext setImageInterpolation: NSImageInterpolationNone];
-    [graphicsContext setShouldAntialias: NO];
+    graphicsContext.imageInterpolation = NSImageInterpolationNone;
+    graphicsContext.shouldAntialias = NO;
     
     [miniImage unlockFocus];
     
@@ -459,16 +460,16 @@
 
 - (void) drawMiniImage
 {
-    if ([self isMiniaturized] == YES)
+    if (self.miniaturized == YES)
     {
         if (mView != nil)
         {
-            NSBitmapImageRep* bitmap = [mView bitmapRepresentation];
+            NSBitmapImageRep* bitmap = mView.bitmapRepresentation;
             
             if (bitmap != nil)
             {
-                const NSSize size           = [mMiniImage size];
-                const NSRect contentRect    = [mView frame];
+                const NSSize size           = mMiniImage.size;
+                const NSRect contentRect    = mView.frame;
                 const float  aspect         = NSWidth (contentRect) / NSHeight (contentRect);
                 const NSRect clearRect      = NSMakeRect( 0.0, 0.0, size.width, size.height );
                 NSRect       miniImageRect  = clearRect;
@@ -490,7 +491,7 @@
                 [bitmap drawInRect: miniImageRect];
                 [mMiniImage unlockFocus];
                 
-                [self setMiniwindowImage: mMiniImage];
+                self.miniwindowImage = mMiniImage;
             }
         }
     }
@@ -520,7 +521,7 @@
 
 - (void) screenParametersDidChange: (NSNotification*) notification
 {
-    const NSRect frameRect = [self constrainFrameRect: [self frame] toScreen: [self screen]];
+    const NSRect frameRect = [self constrainFrameRect: self.frame toScreen: self.screen];
     
     [self setFrame: frameRect display: YES];
     [self center];
@@ -531,147 +532,6 @@
 - (void) keyDown: (NSEvent*) event
 {
     // Already handled by FDHIDInput, implementation avoids the NSBeep() caused by unhandled key events.
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDWindow
-
-+ (id) allocWithZone: (NSZone*) zone
-{
-    return NSAllocateObject ([_FDWindow class], 0, zone);
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (id) init
-{
-    self = [super init];
-    
-    if (self != nil)
-    {
-        [self doesNotRecognizeSelector: _cmd];
-        [self release];
-    }
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (id) initForDisplay: (FDDisplay*) display samples: (NSUInteger) samples
-{
-    FD_UNUSED (display, samples);
-    
-    self = [super init];
-    
-    return self;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (id) initForDisplay: (FDDisplay*) display
-{
-    return [self initForDisplay: display samples: 0];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (id) initWithContentRect: (NSRect) rect samples: (NSUInteger) samples
-{
-    FD_UNUSED (rect, samples);
-    
-    self = [super init];
-    
-    return self;    
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (id) initWithContentRect: (NSRect) rect
-{
-    return [self initWithContentRect: rect samples: 0];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setResizeHandler: (FDResizeHandler) pResizeHandler forContext: (void*) pContext
-{
-    FD_UNUSED (pResizeHandler, pContext);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) centerForDisplay: (FDDisplay*) display
-{
-    FD_UNUSED (display);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setCursorVisible: (BOOL) state
-{
-    FD_UNUSED (state);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isCursorVisible
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setVsync: (BOOL) enabled
-{
-    FD_UNUSED (enabled);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) vsync
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;[self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSOpenGLContext*) openGLContext
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isFullscreen
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) endFrame
-{
-    [self doesNotRecognizeSelector: _cmd];
 }
 
 @end

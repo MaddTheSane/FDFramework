@@ -11,7 +11,17 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDLinkView : FDLinkView
+@interface FDLinkView ()
+
+
+- (void) initFontAttributes;
+- (NSDictionary*) fontAttributesWithColor: (NSColor*) color;
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+@implementation FDLinkView
 {
 @private
     NSString*       mDisplayString;
@@ -21,18 +31,9 @@
     BOOL			mMouseIsDown;
 }
 
-- (void) initFontAttributes;
-- (NSDictionary*) fontAttributesWithColor: (NSColor*) color;
-
-@end
-
 //----------------------------------------------------------------------------------------------------------------------------
 
-@implementation _FDLinkView
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (id) initWithFrame: (NSRect) frameRect
+- (instancetype) initWithFrame: (NSRect) frameRect
 {
     self = [super initWithFrame: frameRect];
 	
@@ -57,15 +58,13 @@
 
 - (NSDictionary *) fontAttributesWithColor: (NSColor *) color
 {
-    NSArray* keys = [NSArray arrayWithObjects: NSFontAttributeName,
+    NSArray* keys = @[NSFontAttributeName,
                      NSForegroundColorAttributeName,
-                     NSUnderlineStyleAttributeName,
-                     nil];
+                     NSUnderlineStyleAttributeName];
     
-    NSArray* objects = [NSArray arrayWithObjects: [NSFont systemFontOfSize: [NSFont systemFontSize]],
+    NSArray* objects = @[[NSFont systemFontOfSize: [NSFont systemFontSize]],
                         color,
-                        [NSNumber numberWithInt: NSSingleUnderlineStyle],
-                        nil];
+                        @(NSSingleUnderlineStyle)];
     
     return [[NSDictionary alloc] initWithObjects: objects forKeys: keys];
 }
@@ -91,7 +90,7 @@
     
     if (displayString == nil)
     {
-        displayString = [url absoluteString];
+        displayString = url.absoluteString;
     }
 
     mDisplayString  = [displayString retain];
@@ -139,9 +138,9 @@
                                        untilDate: [NSDate distantFuture]
                                           inMode: NSEventTrackingRunLoopMode
                                          dequeue: YES];
-        location = [self convertPoint: [nextEvent locationInWindow] fromView: nil];
+        location = [self convertPoint: nextEvent.locationInWindow fromView: nil];
         
-        if (NSMouseInRect (location, [self bounds], NO))
+        if (NSMouseInRect (location, self.bounds, NO))
         {
             [[NSWorkspace sharedWorkspace] openURL: mURL];
         }
@@ -162,33 +161,8 @@
         
         [cursor setOnMouseEntered: YES];
         
-        [self addCursorRect: [self bounds] cursor: cursor];
+        [self addCursorRect: self.bounds cursor: cursor];
     }
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDLinkView
-
-+ (id) allocWithZone: (NSZone*) zone
-{
-    return NSAllocateObject ([_FDLinkView class], 0, zone);
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setURL: (NSURL*) url
-{
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setURL: (NSURL*) url displayString: (NSString*) displayString
-{
-    [self doesNotRecognizeSelector: _cmd];
 }
 
 @end

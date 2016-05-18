@@ -12,7 +12,7 @@
 #import "FDDefines.h"
 
 #import <Cocoa/Cocoa.h>
-#import <ApplicationServices/ApplicationServices.h>
+#include <ApplicationServices/ApplicationServices.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -35,14 +35,25 @@ typedef struct
 
 @interface FDDisplayMode ()
 
-- (id) initWithCGDisplayMode: (CGDisplayModeRef) mode;
-- (CGDisplayModeRef) cgDisplayMode;
+- (instancetype) initWithCGDisplayMode: (CGDisplayModeRef) mode;
+@property (readonly) CGDisplayModeRef cgDisplayMode;
 
 @end
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDDisplay : FDDisplay
+@interface FDDisplay ()
+
+
+- (instancetype) initWithCGDisplayID: (CGDirectDisplayID) displayId;
+- (BOOL) readGammaTable: (GammaTable*) gammaTable;
+- (void) applyGamma: (CGGammaValue) gamma withTable: (GammaTable*) gammaTable;
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+@implementation FDDisplay
 {
 @public
     NSString*           mDisplayName;
@@ -54,17 +65,169 @@ typedef struct
     BOOL                mCanSetGamma;
 }
 
-- (id) initWithCGDisplayID: (CGDirectDisplayID) displayId;
-- (BOOL) readGammaTable: (GammaTable*) gammaTable;
-- (void) applyGamma: (CGGammaValue) gamma withTable: (GammaTable*) gammaTable;
-
-@end
+@synthesize originalMode = mDisplayModeOriginal;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@implementation _FDDisplay
++ (NSArray*) displays
+{
+    if ( sDisplays == nil )
+    {
+        uint32_t            numDisplays     = 0;
+        CGDirectDisplayID*  pDisplays       = NULL;
+        BOOL                success         = (CGGetActiveDisplayList (0, NULL, &numDisplays) == CGDisplayNoErr);
+        
+        if (success == YES)
+        {
+            success     = (numDisplays > 0);
+        }
+        
+        if (success == YES)
+        {
+            pDisplays   = malloc (numDisplays * sizeof (CGDirectDisplayID));
+            success     = (pDisplays != NULL);
+        }
+        
+        if (success == YES)
+        {
+            success = (CGGetActiveDisplayList (numDisplays, pDisplays, &numDisplays) == CGDisplayNoErr);
+        }
+        
+        if (success == YES)
+        {
+            NSMutableArray* displayList = [[NSMutableArray alloc] initWithCapacity: numDisplays];
+            
+            sDisplays = displayList;
+            
+            for (uint32_t i = 0; i < numDisplays; ++i)
+            {
+                [displayList addObject: [[[FDDisplay alloc] initWithCGDisplayID: pDisplays[i]] autorelease]];
+            }
+        }
+        
+        if (pDisplays != NULL)
+        {
+            free (pDisplays);
+        }
+    }
+    
+    return sDisplays;
+}
 
-- (id) init
+//----------------------------------------------------------------------------------------------------------------------------
+
++ (FDDisplay*) mainDisplay
+{
+    FDDisplay*  mainDisplay = nil;
+    
+    for (FDDisplay* display in [FDDisplay displays])
+    {
+        if (display.mainDisplay == YES)
+        {
+            mainDisplay = display;
+            break;
+        }
+    }
+    
+    return mainDisplay;
+}
+
+
+//----------------------------------------------------------------------------------------------------------------------------
+
++ (void) fadeOutAllDisplays: (float) seconds
+{
+    if (sFadeToken == kCGDisplayFadeReservationInvalidToken)
+    {
+        if (CGAcquireDisplayFadeReservation (kCGMaxDisplayReservationInterval, &sFadeToken) == kCGErrorSuccess)
+        {
+            const float     interval    = ((float) seconds) / ((float) skFadeSteps);
+            NSArray*        displays    = [FDDisplay displays];
+            
+            for (NSUInteger i = 0; i < skFadeSteps; ++i)
+            {
+                const CGGammaValue  fade        = 1.0f - (((float) i) * interval);
+                NSEnumerator*       displayEnum = [displays objectEnumerator];
+                FDDisplay*          display     = nil;
+                
+                while ((display = [displayEnum nextObject]) != nil)
+                {
+                    [display applyGamma: (fade * display->mCGGamma) withTable: &(display->mGammaTable)];
+                }
+                
+                usleep (1000000 * interval);
+            }
+        }
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
++ (void) fadeInAllDisplays: (float) seconds
+{
+    if ( sFadeToken != kCGDisplayFadeReservationInvalidToken )
+    {
+        const float     interval    = ((float) seconds) / ((float) skFadeSteps);
+        NSArray*        displays    = [FDDisplay displays];
+        
+        for (NSUInteger i = 0; i < skFadeSteps; ++i)
+        {
+            const CGGammaValue  fade        = ((float) i) * interval;
+            NSEnumerator*       displayEnum = [displays objectEnumerator];
+            FDDisplay*          display     = nil;
+            
+            while ((display = [displayEnum nextObject]) != nil)
+            {
+                [display applyGamma: (fade * display->mCGGamma) withTable: &(display->mGammaTable)];
+            }
+            
+            usleep (1000000 * interval);
+        }
+        
+        CGReleaseDisplayFadeReservation (sFadeToken);
+        
+        sFadeToken = kCGDisplayFadeReservationInvalidToken;
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
++ (void) captureAllDisplays
+{
+    CGDisplayHideCursor (CGMainDisplayID());
+    CGCaptureAllDisplays ();
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
++ (void) releaseAllDisplays
+{
+    CGReleaseAllDisplays ();
+    CGDisplayShowCursor (CGMainDisplayID());
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
++ (BOOL) isAnyDisplayCaptured
+{
+    BOOL isAnyCaptured = NO;
+    
+    for (FDDisplay* display in [FDDisplay displays])
+    {
+        isAnyCaptured = display.captured;
+        
+        if (isAnyCaptured == YES)
+        {
+            break;
+        }
+    }
+    
+    return isAnyCaptured;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+- (instancetype) init
 {
     self = [super init];
     
@@ -79,7 +242,7 @@ typedef struct
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initWithCGDisplayID: (CGDirectDisplayID) displayId
+- (instancetype) initWithCGDisplayID: (CGDirectDisplayID) displayId
 {
     self = [super init];
     
@@ -94,7 +257,7 @@ typedef struct
         }
         else
         {
-            displayName = [NSString stringWithFormat: @"%lu", (unsigned long) [sDisplays count]];
+            displayName = [NSString stringWithFormat: @"%lu", (unsigned long) sDisplays.count];
         }
         
         if (CGDisplayIsBuiltin (displayId) == YES)
@@ -124,7 +287,7 @@ typedef struct
                 
                 if (displayMode != nil)
                 {
-                    NSUInteger          bitsPerPixel    = [displayMode bitsPerPixel];
+                    NSUInteger          bitsPerPixel    = displayMode.bitsPerPixel;
                     BOOL                isValid         = (bitsPerPixel == 32) || (bitsPerPixel == 16);
                     
                     if (isValid == YES)
@@ -194,13 +357,6 @@ typedef struct
     }
     
     return currentMode;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (FDDisplayMode*) originalMode
-{
-    return mDisplayModeOriginal;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -295,7 +451,7 @@ typedef struct
 
 - (BOOL) setDisplayMode: (FDDisplayMode*) displayMode;
 {
-    return CGDisplaySetDisplayMode (mCGDisplayId, [displayMode cgDisplayMode], NULL) == kCGErrorSuccess;
+    return CGDisplaySetDisplayMode (mCGDisplayId, displayMode.cgDisplayMode, NULL) == kCGErrorSuccess;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -335,7 +491,7 @@ typedef struct
 
 - (void) setGamma: (float) gamma update: (BOOL) doUpdate 
 {
-    if ([self isCaptured])
+    if (self.captured)
     {
         if (mCGGamma != gamma)
         {
@@ -405,7 +561,7 @@ typedef struct
 
 - (void) captureDisplay
 {
-    if ([self isCaptured] == NO)
+    if (self.captured == NO)
     {
         CGDisplayCapture (mCGDisplayId);
     }
@@ -415,321 +571,10 @@ typedef struct
 
 - (void) releaseDisplay
 {
-    if ([self isCaptured] == YES)
+    if (self.captured == YES)
     {
         CGDisplayRelease (mCGDisplayId);
     }
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDDisplay
-
-+ (id) allocWithZone: (NSZone*) zone
-{
-    return NSAllocateObject ([_FDDisplay class], 0, zone);
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (NSArray*) displays
-{
-    if ( sDisplays == nil )
-    {
-        uint32_t            numDisplays     = 0;
-        CGDirectDisplayID*  pDisplays       = NULL;
-        BOOL                success         = (CGGetActiveDisplayList (0, NULL, &numDisplays) == CGDisplayNoErr);
-        
-        if (success == YES)
-        {
-            success     = (numDisplays > 0);
-        }
-        
-        if (success == YES)
-        {
-            pDisplays   = malloc (numDisplays * sizeof (CGDirectDisplayID));
-            success     = (pDisplays != NULL);
-        }
-        
-        if (success == YES)
-        {
-            success = (CGGetActiveDisplayList (numDisplays, pDisplays, &numDisplays) == CGDisplayNoErr);
-        }
-        
-        if (success == YES)
-        {
-            NSMutableArray* displayList = [[NSMutableArray alloc] initWithCapacity: numDisplays];
-            
-            sDisplays = displayList;
-            
-            for (uint32_t i = 0; i < numDisplays; ++i)
-            {
-                [displayList addObject: [[[_FDDisplay alloc] initWithCGDisplayID: pDisplays[i]] autorelease]];
-            }
-        }
-        
-        if (pDisplays != NULL)
-        {
-            free (pDisplays);
-        }
-    }
-    
-    return sDisplays;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (FDDisplay*) mainDisplay
-{
-    FDDisplay*  mainDisplay = nil;
-    
-    for (FDDisplay* display in [FDDisplay displays])
-    {
-        if ([display isMainDisplay] == YES)
-        {
-            mainDisplay = display;
-            break;
-        }
-    }
-    
-    return mainDisplay;
-}
-
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (void) fadeOutAllDisplays: (float) seconds
-{
-    if (sFadeToken == kCGDisplayFadeReservationInvalidToken)
-    {
-        if (CGAcquireDisplayFadeReservation (kCGMaxDisplayReservationInterval, &sFadeToken) == kCGErrorSuccess)
-        {
-            const float     interval    = ((float) seconds) / ((float) skFadeSteps);
-            NSArray*        displays    = [FDDisplay displays];
-            
-            for (NSUInteger i = 0; i < skFadeSteps; ++i)
-            {
-                const CGGammaValue  fade        = 1.0f - (((float) i) * interval);
-                NSEnumerator*       displayEnum = [displays objectEnumerator];
-                _FDDisplay*         display     = nil;            
-                
-                while ((display = [displayEnum nextObject]) != nil)
-                {
-                    [display applyGamma: (fade * display->mCGGamma) withTable: &(display->mGammaTable)];
-                }
-                
-                usleep (1000000 * interval);
-            }
-        }
-    }
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (void) fadeInAllDisplays: (float) seconds
-{
-    if ( sFadeToken != kCGDisplayFadeReservationInvalidToken )
-    {
-        const float     interval    = ((float) seconds) / ((float) skFadeSteps);
-        NSArray*        displays    = [FDDisplay displays];
-        
-        for (NSUInteger i = 0; i < skFadeSteps; ++i)
-        {
-            const CGGammaValue  fade        = ((float) i) * interval;
-            NSEnumerator*       displayEnum = [displays objectEnumerator];
-            _FDDisplay*         display     = nil;            
-            
-            while ((display = [displayEnum nextObject]) != nil)
-            {
-                [display applyGamma: (fade * display->mCGGamma) withTable: &(display->mGammaTable)];
-            }
-            
-            usleep (1000000 * interval);
-        }
-        
-        CGReleaseDisplayFadeReservation (sFadeToken);
-        
-        sFadeToken = kCGDisplayFadeReservationInvalidToken;
-    }
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (void) captureAllDisplays
-{
-    CGDisplayHideCursor (CGMainDisplayID());
-    CGCaptureAllDisplays ();
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (void) releaseAllDisplays
-{
-    CGReleaseAllDisplays ();
-    CGDisplayShowCursor (CGMainDisplayID());
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (BOOL) isAnyDisplayCaptured
-{
-    BOOL isAnyCaptured = NO;
-    
-    for (FDDisplay* display in [FDDisplay displays])
-    {
-        isAnyCaptured = [display isCaptured];
-        
-        if (isAnyCaptured == YES)
-        {
-            break;
-        }
-    }
-    
-    return isAnyCaptured;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSRect) frame
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NSZeroRect;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSString*) description
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (FDDisplayMode*) displayMode
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (FDDisplayMode*) originalMode
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSArray*) displayModes
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) setDisplayMode: (FDDisplayMode*) displayMode
-{
-    FD_UNUSED (displayMode);
-    
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isMainDisplay
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isBuiltinDisplay
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isCaptured
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) hasFSAA
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (float) gamma
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0.0f;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setGamma: (float) gamma update: (BOOL) doUpdate
-{
-    FD_UNUSED (gamma, doUpdate);
-
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) fadeOutDisplay: (float) seconds
-{
-    FD_UNUSED (seconds);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) fadeInDisplay: (float) seconds
-{
-    FD_UNUSED (seconds);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) captureDisplay
-{
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) releaseDisplay
-{
-    [self doesNotRecognizeSelector: _cmd];
 }
 
 @end

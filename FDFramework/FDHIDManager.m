@@ -13,9 +13,9 @@
 #import "FDDefines.h"
 #import "FDPreferences.h"
 
-#import <IOKit/IOKitLib.h>
-#import <IOKit/hidsystem/IOHIDLib.h>
-#import <IOKit/hid/IOHIDLib.h>
+#include <IOKit/IOKitLib.h>
+#include <IOKit/hidsystem/IOHIDLib.h>
+#include <IOKit/hid/IOHIDLib.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -53,19 +53,9 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDHIDManager : FDHIDManager
-{
-@private
-    IOHIDManagerRef     mpIOHIDManager;
-    NSMutableArray*     mDevices;
-    
-    FDHIDEvent*         mpEvents;
-    NSUInteger          mReadEvent;
-    NSUInteger          mWriteEvent;
-    NSUInteger          mMaxEvents;
-}
+@interface FDHIDManager ()
 
-- (id) initSharedHIDManager;
+- (instancetype) initSharedHIDManager;
 - (void) applicationWillResignActive: (NSNotification*) notification;
 - (void) registerDevice: (IOHIDDeviceRef) pDevice;
 - (void) unregisterDevice: (IOHIDDeviceRef) pDevice;
@@ -74,9 +64,66 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@implementation _FDHIDManager
+@implementation FDHIDManager
+{
+@private
+    IOHIDManagerRef     mpIOHIDManager;
+    NSMutableArray<FDHIDDevice*>*     mDevices;
+    
+    FDHIDEvent*         mpEvents;
+    NSUInteger          mReadEvent;
+    NSUInteger          mWriteEvent;
+    NSUInteger          mMaxEvents;
+}
 
-- (id) init
+//----------------------------------------------------------------------------------------------------------------------------
+
++ (FDHIDManager*) sharedHIDManager
+{
+    dispatch_once (&sFDHIDManagerPredicate, ^{ sFDHIDManagerInstance = [[FDHIDManager alloc] initSharedHIDManager]; });
+    
+    return sFDHIDManagerInstance;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
++ (void) checkForIncompatibleDevices
+{
+    [[FDPreferences sharedPrefs] registerDefaultObject: @NO forKey: FD_HID_LCC_SUPPRESS_WARNING];
+    
+    // check for Logitech Control Center. LCC installs its own kext and blocks HID events from Logitech devices
+    if ([[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier: FD_HID_LCC_IDENTIFIER] != nil)
+    {
+        if ([[FDPreferences sharedPrefs] boolForKey: FD_HID_LCC_SUPPRESS_WARNING] == NO)
+        {
+            NSAlert*    alert   = [[[NSAlert alloc] init] autorelease];
+            NSString*   appName = [NSRunningApplication currentApplication].localizedName;
+            NSString*   message = [NSString stringWithFormat: @"An installation of the Logitech Control Center software "
+                                   @"has been detected. This software is not compatible with %@.",
+                                   appName];
+            NSString*   informative = [NSString stringWithFormat: @"Please uninstall the Logitech Control Center software "
+                                       @"if you want to use a Logitech input device with %@.",
+                                       appName];
+            
+            alert.messageText = message;
+            alert.informativeText = informative;
+            alert.alertStyle = NSCriticalAlertStyle;
+            [alert setShowsSuppressionButton: YES];
+            [alert runModal];
+            
+            [[FDPreferences sharedPrefs] setObject: alert.suppressionButton forKey: FD_HID_LCC_SUPPRESS_WARNING];
+        }
+    }
+    else
+    {
+        // reset the warning in case LCC was uninstalled
+        [[FDPreferences sharedPrefs] setObject: @NO forKey: FD_HID_LCC_SUPPRESS_WARNING];
+    }
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+- (instancetype) init
 {
     self = [super init];
     
@@ -91,7 +138,7 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initSharedHIDManager
+- (instancetype) initSharedHIDManager
 {
     self = [super init];
     
@@ -129,7 +176,7 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
         if (!success)
         {
             [self release];
-            self = nil;
+            return nil;
         }
     }
     
@@ -167,7 +214,7 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
 {
     FD_UNUSED (notification);
     
-    for (_FDHIDDevice* device in mDevices)
+    for (FDHIDDevice* device in mDevices)
     {
         [device flush];
     }
@@ -201,7 +248,7 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
             }
         }
             
-        if ([matchingArray count] == 0)
+        if (matchingArray.count == 0)
         {
             matchingArray = nil;
         }
@@ -243,7 +290,7 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
 
 - (void) pushEvent: (const FDHIDEvent*) pEvent
 {
-    if ([NSApp isActive] == YES)
+    if (NSApp.active == YES)
     {
         if (mWriteEvent == mMaxEvents)
         {
@@ -275,14 +322,14 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
         
         if (factory != nil)
         {
-            FD_ASSERT ([factory isSubclassOfClass: [_FDHIDDevice class]]);
+            FD_ASSERT ([factory isSubclassOfClass: [FDHIDDevice class]]);
             FD_ASSERT ([factory respondsToSelector: @selector (deviceWithDevice:)]);
             
-            id device = [factory deviceWithDevice: pDevice];
+            FDHIDDevice *device = [factory deviceWithDevice: pDevice];
             
             if (device != nil)
             {
-                [device setDelegate: self];
+                device.delegate = self;
                 [mDevices addObject: device];
                 
                 IOHIDDeviceRegisterInputValueCallback (pDevice, &FDHIDManager_InputHandler, device);
@@ -299,106 +346,14 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
 {
     IOHIDDeviceRegisterInputValueCallback (pDevice, NULL, NULL);
  
-    for (_FDHIDDevice* device in mDevices)
+    for (FDHIDDevice* device in mDevices)
     {
-        if ([device iohidDeviceRef] == pDevice)
+        if (device.iohidDeviceRef == pDevice)
         {
             [mDevices removeObject: device];
             break;
         }
     }
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDHIDManager
-
-+ (id) allocWithZone: (NSZone*) zone
-{
-    return NSAllocateObject ([_FDHIDManager class], 0, zone);
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (FDHIDManager*) sharedHIDManager
-{
-    dispatch_once (&sFDHIDManagerPredicate, ^{ sFDHIDManagerInstance = [[_FDHIDManager alloc] initSharedHIDManager]; });
-    
-    return sFDHIDManagerInstance;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (void) checkForIncompatibleDevices
-{
-    [[FDPreferences sharedPrefs] registerDefaultObject: [NSNumber numberWithBool: NO] forKey: FD_HID_LCC_SUPPRESS_WARNING];
-    
-    // check for Logitech Control Center. LCC installs its own kext and blocks HID events from Logitech devices
-    if ([[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier: FD_HID_LCC_IDENTIFIER] != nil)
-    {
-        if ([[FDPreferences sharedPrefs] boolForKey: FD_HID_LCC_SUPPRESS_WARNING] == NO)
-        {
-            NSAlert*    alert   = [[[NSAlert alloc] init] autorelease];
-            NSString*   appName = [[NSRunningApplication currentApplication] localizedName];
-            NSString*   message = [NSString stringWithFormat: @"An installation of the Logitech Control Center software "
-                                                              @"has been detected. This software is not compatible with %@.",
-                                                              appName];
-            NSString*   informative = [NSString stringWithFormat: @"Please uninstall the Logitech Control Center software "
-                                                                  @"if you want to use a Logitech input device with %@.",
-                                                                  appName];
-            
-            [alert setMessageText: message];
-            [alert setInformativeText: informative];
-            [alert setAlertStyle: NSCriticalAlertStyle];
-            [alert setShowsSuppressionButton: YES];
-            [alert runModal];
-            
-            [[FDPreferences sharedPrefs] setObject: [alert suppressionButton] forKey: FD_HID_LCC_SUPPRESS_WARNING];
-        }
-    }
-    else
-    {
-        // reset the warning in case LCC was uninstalled
-        [[FDPreferences sharedPrefs] setObject: [NSNumber numberWithBool: NO] forKey: FD_HID_LCC_SUPPRESS_WARNING];
-    }
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setDeviceFilter: (NSArray*) devices
-{
-    FD_UNUSED (devices);
-
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSArray*) devices
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (const FDHIDEvent*) nextEvent
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) pushEvent: (const FDHIDEvent*) pEvent
-{
-    FD_UNUSED (pEvent);
-    
-    [self doesNotRecognizeSelector: _cmd];
 }
 
 @end
@@ -411,9 +366,9 @@ void FDHIDManager_InputHandler (void* pContext, IOReturn result, void* pSender, 
     FD_ASSERT (pContext != nil);
     FD_ASSERT (pValue != nil);
     
-    if ([NSApp isActive] == YES)
+    if (NSApp.active == YES)
     {
-        _FDHIDDevice* device = (_FDHIDDevice*) pContext;
+        FDHIDDevice* device = (FDHIDDevice*) pContext;
         
         [device handleInput: pValue];
     }
@@ -427,7 +382,7 @@ void FDHIDManager_DeviceMatchingCallback (void* pContext, IOReturn result, void*
     FD_ASSERT (pContext == sFDHIDManagerInstance);
     FD_ASSERT (pDevice != nil);
 
-    [((_FDHIDManager*) pContext) registerDevice: pDevice];
+    [((FDHIDManager*) pContext) registerDevice: pDevice];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -438,7 +393,7 @@ void FDHIDManager_DeviceRemovalCallback (void* pContext, IOReturn result, void* 
     FD_ASSERT (pContext == sFDHIDManagerInstance);
     FD_ASSERT (pDevice != nil);
     
-    [((_FDHIDManager*) pContext) unregisterDevice: pDevice];
+    [((FDHIDManager*) pContext) unregisterDevice: pDevice];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------

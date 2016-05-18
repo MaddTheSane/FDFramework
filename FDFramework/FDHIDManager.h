@@ -11,7 +11,7 @@
 #import "FDHIDDevice.h"
 
 #import <Cocoa/Cocoa.h>
-#import <IOKit/hid/IOHIDLib.h>
+#include <IOKit/hid/IOHIDLib.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ FD_EXTERN NSString*    FDHIDDeviceMouse;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-enum FDHIDEventType
+typedef NS_ENUM(int, FDHIDEventType)
 {
     eFDHIDEventTypeGamePadAxis,
     eFDHIDEventTypeGamePadButton,
@@ -32,7 +32,7 @@ enum FDHIDEventType
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-enum FDHIDKey
+typedef NS_ENUM(int, FDHIDKey)
 {
     eFDHIDKeyTab            = 9,
     eFDHIDKeyEnter          = 13,
@@ -94,7 +94,7 @@ enum FDHIDKey
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-enum FDHIDMouseAxis
+typedef NS_ENUM(int, FDHIDMouseAxis)
 {
     eFDHIDMouseAxisX,
     eFDHIDMouseAxisY,
@@ -103,7 +103,7 @@ enum FDHIDMouseAxis
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-enum FDHIDGamePadAxis
+typedef NS_ENUM(int, FDHIDGamePadAxis)
 {
     eFDHIDGamePadAxisLeftX,
     eFDHIDGamePadAxisLeftY,
@@ -117,7 +117,7 @@ enum FDHIDGamePadAxis
 
 typedef struct
 {
-    FDHIDDevice*        mDevice;
+    __unsafe_unretained FDHIDDevice*        mDevice;
     enum FDHIDEventType mType;
     unsigned int        mButton;
     
@@ -134,14 +134,12 @@ typedef struct
 //----------------------------------------------------------------------------------------------------------------------------
 
 @interface FDHIDManager : NSObject
-{
-}
 
 + (FDHIDManager*) sharedHIDManager;
 + (void) checkForIncompatibleDevices;
 
 - (void) setDeviceFilter: (NSArray*) deviceTypes;
-- (NSArray*) devices;
+@property (readonly, copy) NSArray<FDHIDDevice *> *devices;
 - (const FDHIDEvent*) nextEvent;
 
 @end

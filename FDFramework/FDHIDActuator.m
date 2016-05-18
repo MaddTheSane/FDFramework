@@ -23,10 +23,10 @@
 #import "FDDefines.h"
 
 #import <Cocoa/Cocoa.h>
-#import <ForceFeedback/ForceFeedback.h>
+#include <ForceFeedback/ForceFeedback.h>
 
-#import <IOKit/hidsystem/IOHIDLib.h>
-#import <IOKit/hid/IOHIDLib.h>
+#include <IOKit/hidsystem/IOHIDLib.h>
+#include <IOKit/hid/IOHIDLib.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -34,9 +34,9 @@ static const DWORD  sFDHIDActuatorDuration = 2 * FF_SECONDS / 100;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@implementation _FDHIDActuator
+@implementation FDHIDActuator
 
-- (id) init
+- (instancetype) init
 {
     self = [super init];
     
@@ -50,7 +50,7 @@ static const DWORD  sFDHIDActuatorDuration = 2 * FF_SECONDS / 100;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initWithDevice: (_FDHIDDevice*) device
+- (instancetype) initWithDevice: (FDHIDDevice*) device
 {
     self = [super init];
     
@@ -59,7 +59,7 @@ static const DWORD  sFDHIDActuatorDuration = 2 * FF_SECONDS / 100;
         FFCAPABILITIES          features        = { 0 };
         UInt32                  autocenter      = 0;
         UInt32                  gain            = FF_FFNOMINALMAX;
-        IOHIDDeviceRef          pDevice         = [device iohidDeviceRef];
+        IOHIDDeviceRef          pDevice         = device.iohidDeviceRef;
         CFMutableDictionaryRef  matchingDict    = nil;
         CFTypeRef               cfType          = nil;
         bool                    success         = (pDevice != nil);
@@ -183,13 +183,13 @@ static const DWORD  sFDHIDActuatorDuration = 2 * FF_SECONDS / 100;
         
         if (success)
         {
-            FDLog (@"%@ has an actuator!\n", [device productName]);
+            FDLog (@"%@ has an actuator!\n", device.productName);
         }
         
         if (!success)
         {
             [self release];
-            self = nil;
+            return nil;
         }
     }
     
@@ -298,76 +298,6 @@ static const DWORD  sFDHIDActuatorDuration = 2 * FF_SECONDS / 100;
 - (void) stop
 {
     FFEffectStop (mpEffect);
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDHIDActuator
-
-+ (id) allocWithZone: (NSZone*) zone
-{
-    return NSAllocateObject ([_FDHIDActuator class], 0, zone);
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setIntensity: (float) intensity;
-{
-    FD_UNUSED (intensity);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (float) intensity
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0.0f;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setDuration: (float) duration
-{
-    FD_UNUSED (duration);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (float) duration
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0.0f;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isActive
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) start
-{
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) stop
-{
-    [self doesNotRecognizeSelector: _cmd];
 }
 
 @end

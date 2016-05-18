@@ -12,18 +12,13 @@
 //----------------------------------------------------------------------------------------------------------------------------
 
 @interface FDView : NSView
-{
-}
 
-- (id) initWithFrame: (NSRect) frameRect;
+- (instancetype) initWithFrame: (NSRect) frameRect;
 
-- (void) setCursor: (NSCursor*) cursor;
-- (NSCursor*) cursor;
+@property (nonatomic, retain) NSCursor *cursor;
+@property BOOL vsync;
 
-- (void) setVsync: (BOOL) enabled;
-- (BOOL) vsync;
-
-- (NSOpenGLContext*) openGLContext;
+@property (readonly, strong) NSOpenGLContext *openGLContext;
 
 @end
 

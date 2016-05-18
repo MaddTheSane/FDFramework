@@ -13,8 +13,8 @@
 #import "FDDefines.h"
 
 #import <Cocoa/Cocoa.h>
-#import <IOKit/hidsystem/IOHIDLib.h>
-#import <IOKit/hid/IOHIDLib.h>
+#include <IOKit/hidsystem/IOHIDLib.h>
+#include <IOKit/hid/IOHIDLib.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -219,7 +219,7 @@ FDHIDUsageToDevice gFDHIDGamePadUsageMap[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDHIDDeviceGamePad : _FDHIDDevice
+@interface _FDHIDDeviceGamePad : FDHIDDevice
 {
 }
 

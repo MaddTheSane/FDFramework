@@ -11,7 +11,7 @@
 #import "FDDefines.h"
 
 #import <Cocoa/Cocoa.h>
-#import <ApplicationServices/ApplicationServices.h>
+#include <ApplicationServices/ApplicationServices.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -34,22 +34,25 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDDisplayMode : FDDisplayMode
-{
-@private
-    CGDisplayModeRef    mCGDisplayMode;
-}
+@interface FDDisplayMode()
 
-- (id) initWithCGDisplayMode: (CGDisplayModeRef) mode;
-- (CGDisplayModeRef) cgDisplayMode;
+
+- (instancetype) initWithCGDisplayMode: (CGDisplayModeRef) mode;
+@property (readonly, assign) CGDisplayModeRef cgDisplayMode;
 
 @end
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@implementation _FDDisplayMode
+@implementation FDDisplayMode
+{
+@private
+    CGDisplayModeRef    mCGDisplayMode;
+}
 
-- (id) init
+@synthesize cgDisplayMode = mCGDisplayMode;
+
+- (instancetype) init
 {
     self = [super init];
     
@@ -64,7 +67,7 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initWithCGDisplayMode: (CGDisplayModeRef) cgDisplayMode
+- (instancetype) initWithCGDisplayMode: (CGDisplayModeRef) cgDisplayMode
 {
     self = [super init];
     
@@ -82,7 +85,7 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
         else
         {
             [self release];
-            self = nil;
+            return nil;
         }
     }
     
@@ -160,21 +163,14 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (CGDisplayModeRef) cgDisplayMode
-{
-    return mCGDisplayMode;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
 - (NSString*) description
 {
-    const unsigned long width           = [self width];
-    const unsigned long height          = [self height];
-    const double        refreshReate    = [self refreshRate];
+    const unsigned long width           = self.width;
+    const unsigned long height          = self.height;
+    const double        refreshReate    = self.refreshRate;
     NSString*           description     = [NSString stringWithFormat: @"%lux%lu %.0fHz", width, height, refreshReate];
     
-    if ([self isStretched] == YES)
+    if (self.stretched == YES)
     {
         description = [description stringByAppendingString: @" (stretched)"];
     }
@@ -186,19 +182,19 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 
 - (BOOL) isEqualTo: (FDDisplayMode*) rhs
 {
-    return ([self width] == [rhs width]) &&
-           ([self height] == [rhs height]) &&
-           ([self bitsPerPixel] == [rhs bitsPerPixel]) &&
-           ([self isStretched] == [rhs isStretched]) &&
-           ([self refreshRate] == [rhs refreshRate]);
+    return (self.width == rhs.width) &&
+           (self.height == rhs.height) &&
+           (self.bitsPerPixel == rhs.bitsPerPixel) &&
+           (self.stretched == rhs.stretched) &&
+           (self.refreshRate == rhs.refreshRate);
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 - (NSComparisonResult) compare: (FDDisplayMode*) rhs
 {
-	const NSUInteger    lhsArea		= [self width] * [self height];
-	const NSUInteger    rhsArea     = [rhs width] * [rhs height];
+	const NSUInteger    lhsArea		= self.width * self.height;
+	const NSUInteger    rhsArea     = rhs.width * rhs.height;
 	NSComparisonResult  result		= NSOrderedDescending;
 	
 	if (lhsArea < rhsArea)
@@ -207,113 +203,17 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 	}
     else if (lhsArea == rhsArea)
     {
-        if ([self refreshRate] < [rhs refreshRate])
+        if (self.refreshRate < rhs.refreshRate)
         {
             result = NSOrderedAscending;    
         }
-        else if (([self isStretched] == NO) && ([rhs isStretched] == YES))
+        else if ((self.stretched == NO) && (rhs.stretched == YES))
         {
             result = NSOrderedAscending;
         }
     }
     
 	return result;
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDDisplayMode
-
-+ (id) allocWithZone: (NSZone*) zone
-{
-    return NSAllocateObject ([_FDDisplayMode class], 0, zone);
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSUInteger) width
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSUInteger) height
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0;    
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isStretched
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isDefault
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSUInteger) bitsPerPixel
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (double) refreshRate
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0.0;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSString*) description
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isEqualTo: (FDDisplayMode*) object
-{
-    FD_UNUSED (object);
-    
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSComparisonResult) compare: (FDDisplayMode*) rhs
-{
-    FD_UNUSED (rhs);
-    
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NSOrderedSame;
 }
 
 @end

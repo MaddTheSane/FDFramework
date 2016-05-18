@@ -14,9 +14,9 @@
 #import "FDDefines.h"
 
 #import <Cocoa/Cocoa.h>
-#import <IOKit/hidsystem/IOHIDLib.h>
-#import <IOKit/hid/IOHIDLib.h>
-#import <Carbon/Carbon.h>
+#include <IOKit/hidsystem/IOHIDLib.h>
+#include <IOKit/hid/IOHIDLib.h>
+#include <Carbon/Carbon.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -292,7 +292,7 @@ FDHIDUsageToDevice gFDHIDKeyboardUsageMap[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static const UInt8     gInSpecialKey[] =
+static const UInt8  sFDHIDSpecialKey[] =
 {
     eFDHIDKeyUpArrow,       eFDHIDKeyDownArrow,     eFDHIDKeyLeftArrow,     eFDHIDKeyRightArrow,
     0,                      0,                      0,                      0,
@@ -316,7 +316,7 @@ static const UInt8     gInSpecialKey[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static const UInt8     gInSpecialKeyFn[] =
+static const UInt8  sFDHIDSpecialKeyFn[] =
 {
     eFDHIDKeyPageUp,        eFDHIDKeyPageDown,      eFDHIDKeyHome,          eFDHIDKeyEnd,
     eFDHIDKeyF1,            eFDHIDKeyF2,            eFDHIDKeyF3,            eFDHIDKeyF4,
@@ -340,7 +340,7 @@ static const UInt8     gInSpecialKeyFn[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static const UInt8     gInNumPadKey[] = 
+static const UInt8  sFDHIDInNumPadKey[] =
 {	
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
@@ -370,7 +370,7 @@ static const UInt8     gInNumPadKey[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDHIDDeviceKeyboard : _FDHIDDevice
+@interface _FDHIDDeviceKeyboard : FDHIDDevice
 {
     BOOL    mFnKeyIsDown;
 }
@@ -380,7 +380,7 @@ static const UInt8     gInNumPadKey[] =
 + (NSUInteger) usagePage;
 + (NSUInteger) usage;
 
-- (id) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) pDeviceDescriptors;
+- (instancetype) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) pDeviceDescriptors NS_DESIGNATED_INITIALIZER;
 
 - (void) setFnKeyState: (BOOL) isDown;
 - (void) evaluateEvent: (NSEvent*) event;
@@ -408,7 +408,7 @@ static const UInt8     gInNumPadKey[] =
             
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) pDeviceDescriptors
+- (instancetype) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) pDeviceDescriptors
 {
     self = [super initWithDevice: pDevice deviceDescriptors: pDeviceDescriptors];
     
@@ -452,7 +452,7 @@ static const UInt8     gInNumPadKey[] =
 
 - (void) evaluateEvent: (NSEvent*) event
 {
-    const NSEventType   eventType = [event type];
+    const NSEventType   eventType = event.type;
     FDHIDEvent          keyEvent = { 0 };
     
     keyEvent.mDevice    = self;
@@ -463,29 +463,29 @@ static const UInt8     gInNumPadKey[] =
         case NSKeyDown:
         case NSKeyUp:
             {
-                NSString*           characters      = [event charactersIgnoringModifiers];
-                const NSUInteger    numCharacters   = [characters length];
+                NSString*           characters      = event.charactersIgnoringModifiers;
+                const NSUInteger    numCharacters   = characters.length;
                 
                 keyEvent.mBoolVal = (eventType == NSKeyDown);
                 
                 for (NSUInteger i = 0; i < numCharacters; ++i)
                 {
-                    NSUInteger  flags       = [event modifierFlags];
+                    NSUInteger  flags       = event.modifierFlags;
                     unichar     character   = [characters characterAtIndex: i];
                     
                     if ((character & 0xFF00) ==  0xF700)
                     {
                         character -= 0xF700;
                         
-                        if (character < FD_SIZE_OF_ARRAY (gInSpecialKey))
+                        if (character < FD_SIZE_OF_ARRAY (sFDHIDSpecialKey))
                         {
                             if (mFnKeyIsDown == YES)
                             {
-                                keyEvent.mButton = gInSpecialKeyFn[character];
+                                keyEvent.mButton = sFDHIDSpecialKeyFn[character];
                             }
                             else
                             {
-                                keyEvent.mButton = gInSpecialKey[character];
+                                keyEvent.mButton = sFDHIDSpecialKey[character];
                             }
                             
                             [self pushEvent: &keyEvent];
@@ -495,13 +495,13 @@ static const UInt8     gInNumPadKey[] =
                     {
                         if (flags & NSNumericPadKeyMask)
                         {
-                            UInt16 keyPad = [event keyCode];
+                            UInt16 keyPad = event.keyCode;
                             
-                            if (keyPad < FD_SIZE_OF_ARRAY (gInNumPadKey))
+                            if (keyPad < FD_SIZE_OF_ARRAY (sFDHIDInNumPadKey))
                             {
-                                if (gInNumPadKey[keyPad] != 0)
+                                if (sFDHIDInNumPadKey[keyPad] != 0)
                                 {
-                                    keyEvent.mButton = gInNumPadKey[keyPad];
+                                    keyEvent.mButton = sFDHIDInNumPadKey[keyPad];
                                     
                                     [self pushEvent: &keyEvent];
                                     break;
@@ -528,7 +528,7 @@ static const UInt8     gInNumPadKey[] =
         case NSFlagsChanged:
             {
                 static NSUInteger   lastFlags       = 0;
-                const NSUInteger    flags           = [event modifierFlags];
+                const NSUInteger    flags           = event.modifierFlags;
                 const NSUInteger    filteredFlags   = flags ^ lastFlags;
                 
                 lastFlags = flags;
@@ -621,21 +621,21 @@ void FDHIDKeyboard_FnHandler (id device, unsigned int keycode, IOHIDValueRef pVa
     
     [device setFnKeyState: (IOHIDValueGetIntegerValue (pValue) != 0)];
     
-    for (uint32_t i = 0; i < FD_SIZE_OF_ARRAY (gInSpecialKey); ++i)
+    for (uint32_t i = 0; i < FD_SIZE_OF_ARRAY (sFDHIDSpecialKey); ++i)
     {
-        if (gInSpecialKey[i] != 0)
+        if (sFDHIDSpecialKey[i] != 0)
         {
-            keyEvent.mButton = gInSpecialKey[i];
+            keyEvent.mButton = sFDHIDSpecialKey[i];
             
             [device pushEvent: &keyEvent];
         }
     }
     
-    for (uint32_t i = 0; i < FD_SIZE_OF_ARRAY (gInSpecialKeyFn); ++i)
+    for (uint32_t i = 0; i < FD_SIZE_OF_ARRAY (sFDHIDSpecialKeyFn); ++i)
     {
-        if (gInSpecialKeyFn[i] != 0)
+        if (sFDHIDSpecialKeyFn[i] != 0)
         {
-            keyEvent.mButton = gInSpecialKeyFn[i];
+            keyEvent.mButton = sFDHIDSpecialKeyFn[i];
             
             [device pushEvent: &keyEvent];
         }

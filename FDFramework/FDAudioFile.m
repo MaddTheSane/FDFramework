@@ -12,19 +12,19 @@
 #import "FDDebug.h"
 
 #import <Cocoa/Cocoa.h>
-#import <CoreAudio/CoreAudio.h>
-#import <AudioToolbox/AudioToolbox.h>
+#include <CoreAudio/CoreAudio.h>
+#include <AudioToolbox/AudioToolbox.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-typedef enum
+typedef NS_ENUM(NSInteger, FDAudioFileStatus)
 {
     eFDAudioFileStatusIdle,
     eFDAudioFileStatusPlaying,
     eFDAudioFileStatusPaused,
     eFDAudioFileStatusFinished,
     eFDAudioFileStatusSuspended
-} FDAudioFileStatus;
+};
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -32,7 +32,18 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDAudioFile : FDAudioFile
+@interface FDAudioFile()
+
+
+- (OSStatus) startAtFrame: (SInt64) startFrame loop: (BOOL) loop;
+- (void) applicationWillHide: (NSNotification*) notification;
+- (void) applicationWillUnhide: (NSNotification*) notification;
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+@implementation FDAudioFile
 {
 @private
     FDAudioMixer*       mMixer;
@@ -46,18 +57,9 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
     
     BOOL                mIsLooping;
 }
+@synthesize loops = mIsLooping;
 
-- (OSStatus) startAtFrame: (SInt64) startFrame loop: (BOOL) loop;
-- (void) applicationWillHide: (NSNotification*) notification;
-- (void) applicationWillUnhide: (NSNotification*) notification;
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation _FDAudioFile
-
-- (id) init
+- (instancetype) init
 {
     self = [super init];
     
@@ -72,7 +74,7 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initWithMixer: (FDAudioMixer*) mixer
+- (instancetype) initWithMixer: (FDAudioMixer*) mixer
 {
     self = [super init];
     
@@ -86,7 +88,7 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
         {
             mMixer      = [mixer retain];
             mBusNumber  = [mixer allocateBus];
-            audioGraph  = [mixer audioGraph];
+            audioGraph  = mixer.audioGraph;
             
             err = AUGraphIsRunning (audioGraph, &graphWasRunning);
             
@@ -115,7 +117,7 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
         
         if (err == noErr)
         {
-            AUNode  mixerNode = [mixer mixerNode];
+            AUNode  mixerNode = mixer.mixerNode;
             
             err = AUGraphConnectNodeInput (audioGraph, mAudioNode, 0, mixerNode, mBusNumber);
         }
@@ -138,7 +140,7 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
         if (err != noErr)
         {
             [self release];
-            self = nil;
+            return nil;
         }
     }
     
@@ -151,8 +153,8 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
 {
     if (mMixer != nil)
     {
-        AUGraph     audioGraph      = [mMixer audioGraph];
-        AUNode      mixerNode       = [mMixer mixerNode];
+        AUGraph     audioGraph      = mMixer.audioGraph;
+        AUNode      mixerNode       = mMixer.mixerNode;
         Boolean     graphWasRunning = false;
         
         [self stop];
@@ -268,7 +270,7 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
 {
     [self stop];
     
-    const char* path    = [[url path] fileSystemRepresentation];
+    const char* path    = url.path.fileSystemRepresentation;
     CFIndex     pathLen = strlen (path);
     CFURLRef    cfPath  = CFURLCreateFromFileSystemRepresentation (kCFAllocatorDefault, (const UInt8*) path, pathLen, false);
     OSStatus    err     = AudioFileOpenURL (cfPath, kAudioFileReadPermission, 0, &mFileId);
@@ -369,13 +371,6 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
     return mStatus == eFDAudioFileStatusFinished;
 }
 
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) loops
-{
-    return mIsLooping;
-}
-
 //----------------------------------------------------------------------------------------------------------------------------
 
 - (void) applicationWillHide: (NSNotification*) notification
@@ -424,110 +419,3 @@ void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegion* pFil
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDAudioFile
-
-+ (id) allocWithZone: (NSZone*) zone
-{
-    return NSAllocateObject ([_FDAudioFile class], 0, zone);
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (id) initWithMixer: (FDAudioMixer*) mixer
-{
-    FD_UNUSED (mixer);
-    
-    self = [super init];
-    
-    if (self != nil)
-    {
-        [self doesNotRecognizeSelector: _cmd];
-        [self release];
-    }
-    
-    return nil;
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (void) setVolume: (float) volume
-{
-    FD_UNUSED (volume);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (float) volume
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0.0f;
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) startFile: (NSURL*) url loop: (BOOL) loop
-{
-    FD_UNUSED (url, loop)
-    
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) stop
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (void) pause
-{
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (void) resume
-{
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isPlaying
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) isFinished
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-//---------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) loops
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return NO;
-}
-
-@end
-
-//---------------------------------------------------------------------------------------------------------------------------

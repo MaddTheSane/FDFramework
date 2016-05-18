@@ -14,8 +14,8 @@
 #import "FDDefines.h"
 
 #import <Cocoa/Cocoa.h>
-#import <IOKit/hidsystem/IOHIDLib.h>
-#import <IOKit/hid/IOHIDLib.h>
+#include <IOKit/hidsystem/IOHIDLib.h>
+#include <IOKit/hid/IOHIDLib.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -27,7 +27,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDHIDDevice ()
+@interface FDHIDDevice ()
 
 + (NSDictionary*) matchingDictionarForUsageMap: (const FDHIDUsageToDevice*) pUsageMap;
 
@@ -38,18 +38,23 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@implementation _FDHIDDevice
+@implementation FDHIDDevice
+@synthesize delegate = mDelegate;
+@synthesize actuator = mActuator;
+@synthesize vendorName = mVendorName;
+@synthesize productName = mProductName;
+@synthesize iohidDeviceRef = mpIOHIDDevice;
 
 + (NSDictionary*) matchingDictionarForUsageMap: (const FDHIDUsageToDevice*) pUsageMap
 {
     FD_ASSERT (pUsageMap);
     
-    NSString*   pageKey     = [NSString stringWithCString: kIOHIDPrimaryUsagePageKey encoding: NSASCIIStringEncoding];
-    NSString*   usageKey    = [NSString stringWithCString: kIOHIDPrimaryUsageKey encoding: NSASCIIStringEncoding];
-    NSNumber*   pageVal     = [NSNumber numberWithInt: pUsageMap->mUsagePage];
-    NSNumber*   usageVal    = [NSNumber numberWithInt: pUsageMap->mUsage];
+    NSString*   pageKey     = @kIOHIDPrimaryUsagePageKey;
+    NSString*   usageKey    = @kIOHIDPrimaryUsageKey;
+    NSNumber*   pageVal     = @(pUsageMap->mUsagePage);
+    NSNumber*   usageVal    = @(pUsageMap->mUsage);
     
-    return [NSDictionary dictionaryWithObjectsAndKeys: pageVal, pageKey, usageVal, usageKey, nil];
+    return @{pageKey: pageVal, usageKey: usageVal};
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -62,7 +67,7 @@
     
     for (NSUInteger i = 0; i < numUsages; ++i)
     {
-        [dictionaries addObject: [_FDHIDDevice matchingDictionarForUsageMap: &(pUsageMap[i])]];
+        [dictionaries addObject: [FDHIDDevice matchingDictionarForUsageMap: &(pUsageMap[i])]];
     }
     
     return dictionaries;
@@ -94,7 +99,7 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) pDeviceDesc
+- (instancetype) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) pDeviceDesc
 {
     self = [super init];
     
@@ -128,12 +133,12 @@
             }
             
             mpDeviceDesc    = pDeviceDesc;            
-            mActuator       = [[_FDHIDActuator alloc] initWithDevice: self];
+            mActuator       = [[FDHIDActuator alloc] initWithDevice: self];
         }
         else
         {
             [self release];
-            self = nil;
+            return nil;
         }
     }
     
@@ -144,20 +149,13 @@
 
 - (void) dealloc
 {
-    FDLog (@"Lost %@ by %@\n", [self productName], [self vendorName]);
+    FDLog (@"Lost %@ by %@\n", self.productName, self.vendorName);
     
     [mActuator release];
     [mVendorName release];
     [mProductName release];
     
     [super dealloc];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setDelegate: (FDHIDManager*) delegate;
-{
-    mDelegate = delegate;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -172,30 +170,16 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (NSUInteger) vendorId
+- (SInt32) vendorId
 {
     return mpDeviceDesc->mVendorId;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (NSUInteger) productId
+- (SInt32) productId
 {
     return mpDeviceDesc->mProductId;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSString*) vendorName
-{
-    return mVendorName;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSString*) productName
-{
-    return mProductName;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -207,16 +191,9 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (IOHIDDeviceRef) iohidDeviceRef
-{
-    return mpIOHIDDevice;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
 - (uint32_t) getDevicePropertyForKey: (CFStringRef) pKey
 {
-    IOHIDDeviceRef  pDevice     = [self iohidDeviceRef];
+    IOHIDDeviceRef  pDevice     = self.iohidDeviceRef;
 	BOOL            success     = (pDevice != nil);
 	CFTypeRef       pProperty   = NULL;
     SInt32          value       = -1;
@@ -248,7 +225,7 @@
 
 - (NSString*) getDevicePropertyStringForKey: (CFStringRef) pKey
 {
-    IOHIDDeviceRef  pDevice     = [self iohidDeviceRef];
+    IOHIDDeviceRef  pDevice     = self.iohidDeviceRef;
     BOOL            success     = (pDevice != nil);
     CFTypeRef       pProperty   = nil;
     NSString*       string      = nil;
@@ -278,10 +255,10 @@
 {
     IOHIDElementRef         pElement    = IOHIDValueGetElement (pValue);
     const uint32_t          type        = IOHIDElementGetType (pElement);
-    const FDHIDElementMap*  pElements   = [self elementMap];
+    const FDHIDElementMap*  pElements   = self.elementMap;
     const uint32_t          typeOffset  = type - pElements[0].mType;
 
-    if (typeOffset < [self elementCount])
+    if (typeOffset < self.elementCount)
     {
         pElements = &(pElements[typeOffset]);
         
@@ -332,71 +309,6 @@
 - (FDHIDActuator*)  actuator
 {
     return mActuator;
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDHIDDevice
-
-- (NSUInteger) vendorId
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSUInteger) productId
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSString*) vendorName
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;    
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSString*) productName
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSString*) deviceType
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (BOOL) hasActuator;
-{
-    return [self actuator] != nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (FDHIDActuator*)  actuator
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return nil;
 }
 
 @end

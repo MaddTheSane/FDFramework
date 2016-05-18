@@ -13,8 +13,8 @@
 #import "FDDefines.h"
 
 #import <Cocoa/Cocoa.h>
-#import <IOKit/hidsystem/IOHIDLib.h>
-#import <IOKit/hid/IOHIDLib.h>
+#include <IOKit/hidsystem/IOHIDLib.h>
+#include <IOKit/hid/IOHIDLib.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ FDHIDUsageToDevice gFDHIDMouseUsageMap[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDHIDDeviceMouse : _FDHIDDevice
+@interface _FDHIDDeviceMouse : FDHIDDevice
 {
 }
 

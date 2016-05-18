@@ -21,8 +21,7 @@ static FDPreferences*   sFDPreferencesInstance  = nil;
 
 @interface FDPreferences ()
 
-- (id) init;
-- (id) initSharedPreferences;
+- (instancetype) initSharedPreferences NS_DESIGNATED_INITIALIZER;
 
 @end
 
@@ -41,9 +40,9 @@ static FDPreferences*   sFDPreferencesInstance  = nil;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) init
+- (instancetype) init
 {
-    self = [super init];
+    self = [self initSharedPreferences];
     
     if (self != nil)
     {
@@ -56,7 +55,7 @@ static FDPreferences*   sFDPreferencesInstance  = nil;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initSharedPreferences
+- (instancetype) initSharedPreferences
 {
     self = [super init];
     
@@ -83,16 +82,16 @@ static FDPreferences*   sFDPreferencesInstance  = nil;
     }
     else if ([object isKindOfClass: [NSPopUpButton class]] == YES)
     {
-        serializable = [self serializableFromObject: [[object selectedItem] representedObject]];
+        serializable = [self serializableFromObject: [object selectedItem].representedObject];
         
         if (serializable == nil)
         {
-            serializable = [NSNumber numberWithLong: [object selectedTag]];
+            serializable = @([object selectedTag]);
         }
     }
     else if ([object isKindOfClass: [NSButton class]] == YES)
     {
-        serializable = [NSNumber numberWithBool: ([object state] == NSOnState)];
+        serializable = @((BOOL)([object state] == NSOnState));
     }
     else if ([object isKindOfClass: [NSString class]] == YES)
     {
@@ -125,7 +124,7 @@ static FDPreferences*   sFDPreferencesInstance  = nil;
 
 - (void) registerDefaultObject: (NSObject*) object forKey: (NSString*) key
 {
-    [self registerDefaults: [NSDictionary dictionaryWithObject: [self serializableFromObject: object] forKey: key]];
+    [self registerDefaults: @{key: [self serializableFromObject: object]}];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------

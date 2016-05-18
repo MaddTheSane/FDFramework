@@ -12,9 +12,9 @@
 #import "FDHIDActuator.h"
 
 #import <Cocoa/Cocoa.h>
-#import <ForceFeedback/ForceFeedback.h>
-#import <IOKit/hidsystem/IOHIDLib.h>
-#import <IOKit/hid/IOHIDLib.h>
+#include <ForceFeedback/ForceFeedback.h>
+#include <IOKit/hidsystem/IOHIDLib.h>
+#include <IOKit/hid/IOHIDLib.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ typedef struct
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDHIDDevice : FDHIDDevice
+@interface FDHIDDevice()
 {
     IOHIDDeviceRef          mpIOHIDDevice;
     NSString*               mVendorName;
@@ -68,27 +68,32 @@ typedef struct
     FDHIDManager*           mDelegate;
 }
 
-+ (NSArray*) matchingDictionaries: (const FDHIDUsageToDevice*) usageMap withCount: (NSUInteger) numUsages;
++ (NSArray<NSDictionary<NSString*,NSNumber*>*>*) matchingDictionaries: (const FDHIDUsageToDevice*) usageMap withCount: (NSUInteger) numUsages;
 + (FDHIDDevice*) deviceWithDevice: (IOHIDDeviceRef) pDevice
                          usageMap: (const FDHIDUsageToDevice*) pUsageMap
                             count: (NSUInteger) numUsages;
 
-- (id) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) deviceDescriptors;
+- (instancetype) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) deviceDescriptors;
 
-- (void) setDelegate: (FDHIDManager*) delegate;
+@property (assign) FDHIDManager* delegate;
 - (void) pushEvent: (const FDHIDEvent*) pEvent;
 
-- (IOHIDDeviceRef) iohidDeviceRef;
+@property (readonly, assign) IOHIDDeviceRef iohidDeviceRef;
 - (void) handleInput: (IOHIDValueRef) pValue;
-- (FDHIDElementMap*) elementMap;
-- (NSUInteger) elementCount;
+@property (readonly) FDHIDElementMap* elementMap;
+@property (readonly) NSUInteger elementCount;
 - (void) flush;
 
 @end
 
+@interface FDHIDDevice (subclassMethods)
++ (FDHIDDevice*) deviceWithDevice: (IOHIDDeviceRef) pDevice;
++ (NSArray<NSDictionary<NSString*,NSNumber*>*>*) matchingDictionaries;
+@end
+
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDHIDActuator : FDHIDActuator
+@interface FDHIDActuator()
 {
     io_service_t            mIoService;
     FFDeviceObjectReference mpDevice;
@@ -101,7 +106,7 @@ typedef struct
 
 }
 
-- (id) initWithDevice: (_FDHIDDevice*) device;
+- (instancetype) initWithDevice: (FDHIDDevice*) device;
 
 @end
 

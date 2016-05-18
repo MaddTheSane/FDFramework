@@ -12,8 +12,8 @@
 #import "FDDefines.h"
 
 #import <Cocoa/Cocoa.h>
-#import <CoreAudio/CoreAudio.h>
-#import <AudioToolbox/AudioToolbox.h>
+#include <CoreAudio/CoreAudio.h>
+#include <AudioToolbox/AudioToolbox.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -22,15 +22,8 @@ static FDAudioMixer*    sFDAudioMixerShared     = nil;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDAudioMixer : FDAudioMixer
-{
-@private
-    AUGraph             mAudioGraph;
-    AudioUnit           mMixerUnit;
-    AUNode              mMixerNode;
-    NSMutableSet*       mBusNumbers;
-    NSMutableArray*     mObservers;
-}
+@interface FDAudioMixer()
+
 
 - (void) applicationWillHide: (NSNotification*) notification;
 - (void) applicationWillUnhide: (NSNotification*) notification;
@@ -39,9 +32,28 @@ static FDAudioMixer*    sFDAudioMixerShared     = nil;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@implementation _FDAudioMixer
+@implementation FDAudioMixer
+{
+@private
+    AUGraph             mAudioGraph;
+    AudioUnit           mMixerUnit;
+    AUNode              mMixerNode;
+    NSMutableSet*       mBusNumbers;
+    NSMutableArray*     mObservers;
+}
+@synthesize audioGraph = mAudioGraph;
+@synthesize mixerNode = mMixerNode;
 
-- (id) init
+//----------------------------------------------------------------------------------------------------------------------------
+
++ (FDAudioMixer*) sharedAudioMixer
+{
+    dispatch_once (&sFDAudioMixerPredicate, ^{ sFDAudioMixerShared = [[FDAudioMixer alloc] init]; });
+    
+    return sFDAudioMixerShared;
+}
+
+- (instancetype) init
 {
     self = [super init];
     
@@ -116,7 +128,7 @@ static FDAudioMixer*    sFDAudioMixerShared     = nil;
         if (err != noErr)
         {
             [self release];
-            self = nil;
+            return nil;
         }
     }
     
@@ -178,20 +190,6 @@ static FDAudioMixer*    sFDAudioMixerShared     = nil;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (AUGraph) audioGraph
-{
-    return mAudioGraph;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (AUNode) mixerNode
-{
-    return mMixerNode;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
 - (void) start
 {
     AUGraphStart (mAudioGraph);
@@ -247,7 +245,7 @@ static FDAudioMixer*    sFDAudioMixerShared     = nil;
 
 - (void) deallocateBus: (AudioUnitElement) busNumber
 {
-    [mBusNumbers removeObject: [NSNumber numberWithInt: busNumber]];
+    [mBusNumbers removeObject: @(busNumber)];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -280,123 +278,6 @@ static FDAudioMixer*    sFDAudioMixerShared     = nil;
     [mObservers makeObjectsPerformSelector: @selector(applicationWillUnhide:) withObject: notification];
     
     AUGraphStart (mAudioGraph);
-}
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDAudioMixer
-
-+ (id) allocWithZone: (NSZone*) zone
-{
-    return NSAllocateObject ([_FDAudioMixer class], 0, zone);
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-+ (FDAudioMixer*) sharedAudioMixer
-{
-    dispatch_once (&sFDAudioMixerPredicate, ^{ sFDAudioMixerShared = [[_FDAudioMixer alloc] init]; });
-    
-    return sFDAudioMixerShared;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (id) init
-{
-    self = [super init];
-    
-    return self;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setVolume: (float) volume forBus: (AudioUnitElement) busNumber
-{
-    FD_UNUSED (volume, busNumber);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (float) volumeForBus: (AudioUnitElement) busNumber
-{
-    FD_UNUSED (busNumber);
-    
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0.0f;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) start
-{
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) stop
-{
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (AUGraph) audioGraph
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (AUNode) mixerNode
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (AudioUnitElement) allocateBus
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) deallocateBus: (AudioUnitElement) busNumber
-{
-    FD_UNUSED (busNumber);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) addObserver: (id) object
-{
-    FD_UNUSED (object);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) removeObserver: (id) object
-{
-    FD_UNUSED (object);
-    
-    [self doesNotRecognizeSelector: _cmd];
 }
 
 @end

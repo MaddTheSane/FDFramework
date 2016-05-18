@@ -12,8 +12,8 @@
 #import "FDDefines.h"
 
 #import <Cocoa/Cocoa.h>
-#import <CoreAudio/CoreAudio.h>
-#import <AudioToolbox/AudioToolbox.h>
+#include <CoreAudio/CoreAudio.h>
+#include <AudioToolbox/AudioToolbox.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -22,7 +22,15 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void*, AudioUnitRenderActionFla
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface _FDAudioBuffer : FDAudioBuffer
+@interface FDAudioBuffer()
+
+- (NSUInteger) fillBuffer: (AudioBuffer*) pIoData;
+
+@end
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+@implementation FDAudioBuffer
 {
 @private
     FDAudioMixer*           mMixer;
@@ -32,15 +40,7 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void*, AudioUnitRenderActionFla
     AudioUnitElement        mBusNumber;
 }
 
-- (NSUInteger) fillBuffer: (AudioBuffer*) pIoData;
-
-@end
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation _FDAudioBuffer
-
-- (id) init
+- (instancetype) init
 {
     self = [super init];
     
@@ -55,7 +55,7 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void*, AudioUnitRenderActionFla
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-- (id) initWithMixer: (FDAudioMixer*) mixer
+- (instancetype) initWithMixer: (FDAudioMixer*) mixer
            frequency: (NSUInteger) frequency
       bitsPerChannel: (NSUInteger) bitsPerChannel
             channels: (NSUInteger) numChannels
@@ -75,7 +75,7 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void*, AudioUnitRenderActionFla
         {
             mMixer      = [mixer retain];
             mBusNumber  = [mixer allocateBus];
-            audioGraph  = [mixer audioGraph];
+            audioGraph  = mixer.audioGraph;
             
             err = AUGraphIsRunning (audioGraph, &graphWasRunning);
         }
@@ -138,7 +138,7 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void*, AudioUnitRenderActionFla
         
         if (err == noErr)
         {
-            AUNode  mixerNode = [mixer mixerNode];
+            AUNode  mixerNode = mixer.mixerNode;
             
             err = AUGraphConnectNodeInput (audioGraph, mConverterNode, 0, mixerNode, mBusNumber);
         }
@@ -157,7 +157,7 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void*, AudioUnitRenderActionFla
         if (err != noErr)
         {
             [self release];
-            self = nil;
+            return nil;
         }
     }
     
@@ -170,8 +170,8 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void*, AudioUnitRenderActionFla
 {
     if (mMixer != nil)
     {
-        AUGraph     audioGraph      = [mMixer audioGraph];
-        AUNode      mixerNode       = [mMixer mixerNode];
+        AUGraph     audioGraph      = mMixer.audioGraph;
+        AUNode      mixerNode       = mMixer.mixerNode;
         Boolean     graphWasRunning = false;
         
         AUGraphIsRunning (audioGraph, &graphWasRunning);
@@ -233,7 +233,7 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void* pContext, AudioUnitRender
                                                  const AudioTimeStamp* pTime, UInt32 bus, UInt32 numFrames,
                                                  AudioBufferList* pIoData)
 {
-    _FDAudioBuffer* pSound          = (_FDAudioBuffer*) pContext;
+    FDAudioBuffer* pSound           = (FDAudioBuffer*) pContext;
     AudioBuffer*    pAudioBuffer    = &pIoData->mBuffers[0];
     NSUInteger      bytesToWrite    = pAudioBuffer->mDataByteSize;
     
@@ -251,56 +251,5 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void* pContext, AudioUnitRender
     
     return noErr;
 }
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-@implementation FDAudioBuffer
-
-+ (id) allocWithZone: (NSZone*) zone
-{
-    return NSAllocateObject ([_FDAudioBuffer class], 0, zone);
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (id) initWithMixer: (FDAudioMixer*) mixer
-           frequency: (NSUInteger) frequency
-      bitsPerChannel: (NSUInteger) bitsPerChannel
-            channels: (NSUInteger) channels
-            callback: (FDAudioBufferCallback) pCallback
-             context: (void*) pContext
-{
-    FD_UNUSED (mixer, frequency, bitsPerChannel, channels, pCallback, pContext);
-
-    self = [super init];
-    
-    if (self != nil)
-    {
-        [self doesNotRecognizeSelector: _cmd];
-        [self release];
-    }
-    
-    return nil;
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (void) setVolume: (float) volume
-{
-    FD_UNUSED (volume);
-    
-    [self doesNotRecognizeSelector: _cmd];
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (float) volume
-{
-    [self doesNotRecognizeSelector: _cmd];
-    
-    return 0.0f;
-}
-
-@end
 
 //----------------------------------------------------------------------------------------------------------------------------
