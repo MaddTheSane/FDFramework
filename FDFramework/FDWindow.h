@@ -10,6 +10,9 @@
 #import "FDDisplay.h"
 
 #import <Cocoa/Cocoa.h>
+#ifndef NS_SWIFT_NAME
+#define NS_SWIFT_NAME(...)
+#endif
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -19,8 +22,8 @@ typedef void (*FDResizeHandler) (id fdView, void* pContext);
 
 @interface FDWindow : NSWindow
 
-- (instancetype) initForDisplay: (FDDisplay*) display;
-- (instancetype) initForDisplay: (FDDisplay*) display samples: (NSUInteger) samples NS_DESIGNATED_INITIALIZER;
+- (instancetype) initForDisplay: (FDDisplay*) display NS_SWIFT_NAME(init(display:));
+- (instancetype) initForDisplay: (FDDisplay*) display samples: (NSUInteger) samples NS_DESIGNATED_INITIALIZER NS_SWIFT_NAME(init(display:samples:));
 
 - (instancetype) initWithContentRect: (NSRect) rect;
 - (instancetype) initWithContentRect: (NSRect) rect samples: (NSUInteger) samples NS_DESIGNATED_INITIALIZER;

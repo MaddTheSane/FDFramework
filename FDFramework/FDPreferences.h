@@ -11,24 +11,28 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface FDPreferences : NSObject
 
 - (instancetype) init UNAVAILABLE_ATTRIBUTE;
 
 + (FDPreferences*) sharedPrefs;
 
-- (void) registerDefaults: (NSDictionary*) dictionary;
+- (void) registerDefaults: (NSDictionary<NSString*,id>*) dictionary;
 - (void) registerDefaultObject: (NSObject*) object forKey: (NSString*) key;
 
-- (void) setObject: (id) object forKey: (NSString*) key;
+- (void) setObject: (nullable id) object forKey: (NSString*) key;
 
 - (BOOL) boolForKey: (NSString*) key;
 - (NSInteger) integerForKey: (NSString*) key;
-- (NSString*) stringForKey: (NSString*) key;
-- (NSArray*) arrayForKey: (NSString*) key;
+- (nullable NSString*) stringForKey: (NSString*) key;
+- (nullable NSArray*) arrayForKey: (NSString*) key;
 
 - (BOOL) synchronize;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 //----------------------------------------------------------------------------------------------------------------------------

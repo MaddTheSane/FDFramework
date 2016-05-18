@@ -13,6 +13,8 @@
 #import <Cocoa/Cocoa.h>
 #include <IOKit/hid/IOHIDLib.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 //----------------------------------------------------------------------------------------------------------------------------
 
 FD_EXTERN NSString*    FDHIDDeviceGamePad;
@@ -117,7 +119,7 @@ typedef NS_ENUM(int, FDHIDGamePadAxis)
 
 typedef struct
 {
-    __unsafe_unretained FDHIDDevice*        mDevice;
+    __unsafe_unretained FDHIDDevice*__nullable        mDevice;
     enum FDHIDEventType mType;
     unsigned int        mButton;
     
@@ -145,3 +147,5 @@ typedef struct
 @end
 
 //----------------------------------------------------------------------------------------------------------------------------
+
+NS_ASSUME_NONNULL_END
