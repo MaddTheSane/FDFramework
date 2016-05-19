@@ -212,6 +212,7 @@
 			);
 			path = FruitzOfDojoSwift;
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 /* End PBXGroup section */
 

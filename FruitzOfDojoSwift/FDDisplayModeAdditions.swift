@@ -18,9 +18,9 @@ public func ==(lhs: FDDisplayMode, rhs: FDDisplayMode) -> Bool {
 }
 
 public func <(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
-    return lhs.compare(rhs) == .OrderedDescending
+    return lhs.compare(rhs) == .OrderedAscending
 }
 
 public func >(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
-    return lhs.compare(rhs) == .OrderedAscending
+    return lhs.compare(rhs) == .OrderedDescending
 }
