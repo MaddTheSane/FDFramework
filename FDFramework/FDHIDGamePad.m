@@ -220,8 +220,6 @@ FDHIDUsageToDevice gFDHIDGamePadUsageMap[] =
 //----------------------------------------------------------------------------------------------------------------------------
 
 @interface _FDHIDDeviceGamePad : FDHIDDevice
-{
-}
 
 + (NSArray*) matchingDictionaries;
 + (FDHIDDevice*) deviceWithDevice: (IOHIDDeviceRef) pDevice;

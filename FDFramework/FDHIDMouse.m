@@ -73,8 +73,6 @@ FDHIDUsageToDevice gFDHIDMouseUsageMap[] =
 //----------------------------------------------------------------------------------------------------------------------------
 
 @interface _FDHIDDeviceMouse : FDHIDDevice
-{
-}
 
 + (NSArray*) matchingDictionaries;
 + (FDHIDDevice*) deviceWithDevice: (IOHIDDeviceRef) pDevice;
