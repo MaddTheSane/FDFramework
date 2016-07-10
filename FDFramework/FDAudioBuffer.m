@@ -42,7 +42,7 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void*, AudioUnitRenderActionFla
 
 - (instancetype) init
 {
-    self = [super init];
+    self = [self initWithMixer:nil frequency:0 bitsPerChannel:0 channels:0 callback:NULL context:NULL];
     
     if (self != nil)
     {

@@ -15,7 +15,7 @@ IB_DESIGNABLE
 @interface FDLinkView : NSView
 
 IBInspectable
-@property (retain, nullable) NSURL *url;
+@property (nonatomic, retain, nullable, setter=setURL:) NSURL *url;
 - (void) setURL: (nullable NSURL*) url displayString: (nullable NSString*) displayString;
 
 @end

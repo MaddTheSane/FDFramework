@@ -61,7 +61,7 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
 
 - (instancetype) init
 {
-    self = [super init];
+    self = [self initWithMixer:nil];
     
     if (self != nil)
     {
