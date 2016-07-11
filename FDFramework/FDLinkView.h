@@ -16,6 +16,8 @@ IB_DESIGNABLE
 
 IBInspectable
 @property (nonatomic, retain, nullable, setter=setURL:) NSURL *url;
+IBInspectable
+@property (nonatomic, copy, nullable) NSString *displayString;
 - (void) setURL: (nullable NSURL*) url displayString: (nullable NSString*) displayString;
 
 @end

@@ -31,6 +31,7 @@
     BOOL			mMouseIsDown;
 }
 @synthesize url = mURL;
+@synthesize displayString = mDisplayString;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -86,7 +87,6 @@
 
 - (void) setURL: (NSURL*) url displayString: (NSString*) displayString
 {
-    [mDisplayString release];
     [mURL release];
     
     if (displayString == nil)
@@ -94,7 +94,7 @@
         displayString = url.absoluteString;
     }
 
-    mDisplayString  = [displayString retain];
+    self.displayString  = displayString;
     mURL            = [url retain];
 }
 
