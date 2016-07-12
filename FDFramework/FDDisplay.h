@@ -19,6 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray<FDDisplay*>*) displays;
 + (FDDisplay*) mainDisplay;
+#if __has_feature(objc_class_property)
+@property (class, readonly, copy) NSArray<FDDisplay*>* displays;
+@property (class, readonly, retain) FDDisplay* mainDisplay;
+#endif
 
 @property (readonly) NSRect frame;
 

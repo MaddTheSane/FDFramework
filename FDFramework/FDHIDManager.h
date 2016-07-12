@@ -138,6 +138,9 @@ typedef struct
 @interface FDHIDManager : NSObject
 
 + (FDHIDManager*) sharedHIDManager;
+#if __has_feature(objc_class_property)
+@property (class, readonly, retain) FDHIDManager *sharedHIDManager;
+#endif
 + (void) checkForIncompatibleDevices;
 
 - (void) setDeviceFilter: (nullable NSArray<NSString*>*) deviceTypes;

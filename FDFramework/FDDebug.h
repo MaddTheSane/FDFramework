@@ -25,6 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (FDDebug*) sharedDebug;
 + (BOOL) isDebuggerAttached;
+#if __has_feature(objc_class_property)
+@property (class, readonly, retain) FDDebug *sharedDebug;
+@property (class, readonly, getter=isDebuggerAttached) BOOL debuggerAttached;
+#endif
 
 - (instancetype) init NS_DESIGNATED_INITIALIZER;
 - (instancetype) initWithName: (NSString*) name NS_DESIGNATED_INITIALIZER;
