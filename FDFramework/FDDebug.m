@@ -80,7 +80,7 @@ static NSString*        sFDDebugDefaultName = @"";
     
     mName = [[NSString alloc] initWithString: name];
     
-    if (name.length)
+    if ([name length])
     {
         mLogPrefix = [[NSString alloc] initWithFormat: @"[%@] ", name];
     }
@@ -200,11 +200,11 @@ static NSString*        sFDDebugDefaultName = @"";
     else
     {
         NSLog (@"%@An exception has occured: %@\n", mLogPrefix, msg);
-		NSAlert *alert = [[NSAlert alloc] init];
-		alert.messageText = @"An exception has occured:";
-		alert.informativeText = msg;
+        NSAlert *alert = [[NSAlert alloc] init];
+        alert.messageText = @"An exception has occured:";
+        alert.informativeText = msg;
         alert.alertStyle = NSCriticalAlertStyle;
-		[alert runModal];
+        [alert runModal];
     }
 }
 

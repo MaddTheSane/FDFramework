@@ -34,3 +34,4 @@ FOUNDATION_EXPORT const unsigned char FruitzOfDojoVersionString[];
 #import <FruitzOfDojo/FDScreenshot.h>
 #import <FruitzOfDojo/FDView.h>
 #import <FruitzOfDojo/FDWindow.h>
+#import <FruitzOfDojo/FDBundleVersion.h>

@@ -51,6 +51,8 @@
 		55F926131CED18F900145952 /* FruitzOfDojoSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F926121CED18F900145952 /* FruitzOfDojoSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55F926191CED190E00145952 /* FDDisplayModeAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F926181CED190E00145952 /* FDDisplayModeAdditions.swift */; };
 		55F9261C1CED194C00145952 /* FruitzOfDojo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556478241CECEE1000ECD01B /* FruitzOfDojo.framework */; };
+		55FE60071D4EC57900FBBA91 /* FDBundleVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FE60051D4EC57900FBBA91 /* FDBundleVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55FE60081D4EC57900FBBA91 /* FDBundleVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FE60061D4EC57900FBBA91 /* FDBundleVersion.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +114,8 @@
 		55F926121CED18F900145952 /* FruitzOfDojoSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FruitzOfDojoSwift.h; sourceTree = "<group>"; };
 		55F926141CED18F900145952 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55F926181CED190E00145952 /* FDDisplayModeAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDDisplayModeAdditions.swift; sourceTree = "<group>"; };
+		55FE60051D4EC57900FBBA91 /* FDBundleVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBundleVersion.h; sourceTree = "<group>"; };
+		55FE60061D4EC57900FBBA91 /* FDBundleVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBundleVersion.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +166,8 @@
 				556478331CECEE3300ECD01B /* FDAudioInternal.h */,
 				556478341CECEE3300ECD01B /* FDAudioMixer.h */,
 				556478351CECEE3300ECD01B /* FDAudioMixer.m */,
+				55FE60051D4EC57900FBBA91 /* FDBundleVersion.h */,
+				55FE60061D4EC57900FBBA91 /* FDBundleVersion.m */,
 				556478361CECEE3300ECD01B /* FDDebug.h */,
 				556478371CECEE3300ECD01B /* FDDebug.m */,
 				556478381CECEE3300ECD01B /* FDDefines.h */,
@@ -237,6 +243,7 @@
 				556478571CECEE3300ECD01B /* FDAudioBuffer.h in Headers */,
 				556478591CECEE3300ECD01B /* FDAudioFile.h in Headers */,
 				556478601CECEE3300ECD01B /* FDDefines.h in Headers */,
+				55FE60071D4EC57900FBBA91 /* FDBundleVersion.h in Headers */,
 				556478741CECEE3300ECD01B /* FDModifierCheck.h in Headers */,
 				5564786D1CECEE3300ECD01B /* FDHIDInternal.h in Headers */,
 				5564785C1CECEE3300ECD01B /* FDAudioMixer.h in Headers */,
@@ -365,6 +372,7 @@
 				556478791CECEE3300ECD01B /* FDScreenshot.m in Sources */,
 				556478751CECEE3300ECD01B /* FDModifierCheck.m in Sources */,
 				556478701CECEE3300ECD01B /* FDHIDManager.m in Sources */,
+				55FE60081D4EC57900FBBA91 /* FDBundleVersion.m in Sources */,
 				556478621CECEE3300ECD01B /* FDDisplay.m in Sources */,
 				556478581CECEE3300ECD01B /* FDAudioBuffer.m in Sources */,
 				5564787E1CECEE3300ECD01B /* FDWindow.m in Sources */,
