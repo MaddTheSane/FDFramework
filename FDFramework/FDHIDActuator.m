@@ -290,7 +290,7 @@ static const DWORD  sFDHIDActuatorDuration = 2 * FF_SECONDS / 100;
 
 - (void) start
 {
-    FFEffectStart (mpEffect, 1 /* FF_INFINITE */, 0 /* FFES_SOLO */);
+    FFEffectStart (mpEffect, 1 /* FF_INFINITE */, FFES_SOLO);
 }
 
 //----------------------------------------------------------------------------------------------------------------------------

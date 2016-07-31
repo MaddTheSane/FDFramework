@@ -33,6 +33,47 @@ typedef struct
 
 //----------------------------------------------------------------------------------------------------------------------------
 
+static NSString* getPreferredDisplayName(CGDirectDisplayID displayID)
+{
+    NSString* name = @"Unknown";
+    
+    //TODO: 'CGDisplayIOServicePort' is deprecated (but still available) in OS X 10.9
+    // I believe something else will come out by the time it is fully deprecated...or
+    // Apple will document a way of getting this additional display info while using
+    // CoreGraphics.
+    io_service_t displayServicePort = CGDisplayIOServicePort(displayID);
+    
+    if (displayServicePort)
+    {
+        NSDictionary *displayInfoDict = CFBridgingRelease(IODisplayCreateInfoDictionary(displayServicePort, kIODisplayOnlyPreferredName));
+        
+        if(displayInfoDict)
+        {
+            // this array will be populated with the localized names for the display (i.e. names of the
+            // display in different languages)
+            NSDictionary *namesForDisplay = displayInfoDict[@kDisplayProductName];
+            
+            if (namesForDisplay) {
+                NSString *tempName = [namesForDisplay[[NSLocale autoupdatingCurrentLocale].localeIdentifier] retain];
+                if (!tempName) {
+                    tempName = [namesForDisplay[@"en_US"] retain];
+                }
+                if (tempName) {
+                    name = tempName;
+                }
+            }
+            
+            [displayInfoDict release];
+        }
+        
+        IOObjectRelease(displayServicePort);
+    }
+    
+    return [name autorelease];
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
 @interface FDDisplayMode ()
 
 - (instancetype) initWithCGDisplayMode: (CGDisplayModeRef) mode;
@@ -57,7 +98,7 @@ typedef struct
 {
 @public
     NSString*           mDisplayName;
-    NSArray*            mDisplayModes;
+    NSArray<FDDisplayMode*>* mDisplayModes;
     FDDisplayMode*      mDisplayModeOriginal;
     CGDirectDisplayID   mCGDisplayId;
     CGGammaValue        mCGGamma;
@@ -67,6 +108,7 @@ typedef struct
 
 @synthesize originalMode = mDisplayModeOriginal;
 @synthesize gamma = mCGGamma;
+@synthesize displayModes = mDisplayModes;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -247,23 +289,24 @@ typedef struct
 {
     self = [super init];
     
-    if (self != nil )
+    if (self != nil)
     {
-        NSString*           displayName     = nil;
+        NSMutableString     *displayName     = [getPreferredDisplayName(displayId) mutableCopy];
         CGDisplayModeRef    originalMode    = CGDisplayCopyDisplayMode (displayId);
+        getPreferredDisplayName(displayId);
         
         if (CGDisplayIsMain (displayId) == YES)
         {
-            displayName = @"Main";
+            [displayName appendString:@" (Main)"];
         }
         else
         {
-            displayName = [NSString stringWithFormat: @"%lu", (unsigned long) sDisplays.count];
+            [displayName appendFormat:@" (%lu)", (unsigned long) sDisplays.count];
         }
         
         if (CGDisplayIsBuiltin (displayId) == YES)
         {
-            displayName = [displayName stringByAppendingString: @" (built in)"];
+            [displayName appendString:@" (built in)"];
         }
         
         if (originalMode)
@@ -283,7 +326,7 @@ typedef struct
             
             for (CFIndex i = 0; i < numModes; ++i)
             {
-                CGDisplayModeRef    mode            = (CGDisplayModeRef) CFArrayGetValueAtIndex (modes, i);                
+                CGDisplayModeRef    mode            = (CGDisplayModeRef) CFArrayGetValueAtIndex (modes, i);
                 FDDisplayMode*      displayMode     = [[FDDisplayMode alloc] initWithCGDisplayMode: mode];
                 
                 if (displayMode != nil)
@@ -304,12 +347,9 @@ typedef struct
                     
                     if (isValid == YES)
                     {
-                        [modeList addObject: [displayMode autorelease]];
+                        [modeList addObject: displayMode];
                     }
-                    else
-                    {
-                        [displayMode release];
-                    }
+                    [displayMode release];
                 }
             }
             
@@ -317,13 +357,15 @@ typedef struct
             
             [modeList sortUsingSelector: @selector (compare:)];
             
-            mDisplayModes = modeList;
+            mDisplayModes = [modeList copy];
+            [modeList release];
         }
-
-        mDisplayName    = [displayName retain];
+        
+        mDisplayName    = [displayName copy];
         mCGDisplayId    = displayId;
         mCGGamma        = 1.0f;
         mCanSetGamma    = [self readGammaTable: &mGammaTable];
+        [displayName release];
     }
     
     return self;
@@ -439,13 +481,6 @@ typedef struct
     //       max samples are always 8 if we have sample buffers and max samples is greater than 1.
 
     return (maxSampleBuffers > 0) && (maxSamples > 1);
-}
-
-//----------------------------------------------------------------------------------------------------------------------------
-
-- (NSArray*) displayModes
-{
-    return mDisplayModes;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------

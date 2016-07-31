@@ -22,41 +22,43 @@ typedef struct
 {
     uint32_t                mUsage;
     uint32_t                mButton;
-    void                    (*mpEventHandler)(id, unsigned int, IOHIDValueRef, IOHIDElementRef);
+    void                    (*__nullable mpEventHandler)(__kindof FDHIDDevice*__nonnull, unsigned int, IOHIDValueRef __nonnull, IOHIDElementRef __nullable);
 } FDHIDButtonMap;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 typedef struct 
 {
-    uint32                  mType;
-    uint32                  mNumButtons;
-    FDHIDButtonMap*         mpButtons;
+    uint32                      mType;
+    uint32                      mNumButtons;
+    FDHIDButtonMap*__nullable   mpButtons;
 } FDHIDElementMap;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 typedef struct
 {
-    SInt32                  mVendorId;
-    SInt32                  mProductId;
-    FDHIDElementMap*        mpElements;
-    uint32_t                mNumElements;
-    uint32_t                mPadding;
+    SInt32                      mVendorId;
+    SInt32                      mProductId;
+    FDHIDElementMap*__nullable  mpElements;
+    uint32_t                    mNumElements;
+    uint32_t                    mPadding;
 } FDHIDDeviceDesc;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 typedef struct
 {
-    uint32_t                mUsagePage;
-    uint32_t                mUsage;
-    FDHIDDeviceDesc*        mDeviceDesc;
-    uint32_t                mNumDeviceDesc;
-    uint32_t                m_Padding;
+    uint32_t                    mUsagePage;
+    uint32_t                    mUsage;
+    FDHIDDeviceDesc*__nullable  mDeviceDesc;
+    uint32_t                    mNumDeviceDesc;
+    uint32_t                    m_Padding;
 } FDHIDUsageToDevice;
 
 //----------------------------------------------------------------------------------------------------------------------------
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface FDHIDDevice()
 {
@@ -69,13 +71,13 @@ typedef struct
 }
 
 + (NSArray<NSDictionary<NSString*,NSNumber*>*>*) matchingDictionaries: (const FDHIDUsageToDevice*) usageMap withCount: (NSUInteger) numUsages;
-+ (FDHIDDevice*) deviceWithDevice: (IOHIDDeviceRef) pDevice
-                         usageMap: (const FDHIDUsageToDevice*) pUsageMap
-                            count: (NSUInteger) numUsages;
++ (nullable FDHIDDevice*) deviceWithDevice: (IOHIDDeviceRef) pDevice
+                                  usageMap: (const FDHIDUsageToDevice*) pUsageMap
+                                     count: (NSUInteger) numUsages;
 
 - (instancetype) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) deviceDescriptors;
 
-@property (assign) FDHIDManager* delegate;
+@property (assign, nullable) FDHIDManager* delegate;
 - (void) pushEvent: (const FDHIDEvent*) pEvent;
 
 @property (readonly, assign) IOHIDDeviceRef iohidDeviceRef;
@@ -87,7 +89,7 @@ typedef struct
 @end
 
 @interface FDHIDDevice (subclassMethods)
-+ (FDHIDDevice*) deviceWithDevice: (IOHIDDeviceRef) pDevice;
++ (nullable FDHIDDevice*) deviceWithDevice: (IOHIDDeviceRef) pDevice;
 + (NSArray<NSDictionary<NSString*,NSNumber*>*>*) matchingDictionaries;
 @end
 
@@ -106,8 +108,10 @@ typedef struct
 
 }
 
-- (instancetype) initWithDevice: (FDHIDDevice*) device;
+- (nullable instancetype) initWithDevice: (FDHIDDevice*) device;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 //----------------------------------------------------------------------------------------------------------------------------

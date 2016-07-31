@@ -17,13 +17,18 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-typedef NS_ENUM(NSInteger, FDAudioFileStatus)
-{
-    eFDAudioFileStatusIdle,
-    eFDAudioFileStatusPlaying,
-    eFDAudioFileStatusPaused,
-    eFDAudioFileStatusFinished,
-    eFDAudioFileStatusSuspended
+typedef NS_ENUM(NSInteger, FDAudioFileStatus) {
+    FDAudioFileStatusIdle,
+    FDAudioFileStatusPlaying,
+    FDAudioFileStatusPaused,
+    FDAudioFileStatusFinished,
+    FDAudioFileStatusSuspended,
+    
+    eFDAudioFileStatusIdle NS_SWIFT_UNAVAILABLE("Use .Idle instead") = FDAudioFileStatusIdle,
+    eFDAudioFileStatusPlaying NS_SWIFT_UNAVAILABLE("Use .Playing instead") = FDAudioFileStatusPlaying,
+    eFDAudioFileStatusPaused NS_SWIFT_UNAVAILABLE("Use .Paused instead") = FDAudioFileStatusPaused,
+    eFDAudioFileStatusFinished NS_SWIFT_UNAVAILABLE("Use .Finished instead") = FDAudioFileStatusFinished,
+    eFDAudioFileStatusSuspended NS_SWIFT_UNAVAILABLE("Use .Suspended instead") = FDAudioFileStatusSuspended
 };
 
 //----------------------------------------------------------------------------------------------------------------------------

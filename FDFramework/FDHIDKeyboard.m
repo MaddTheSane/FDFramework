@@ -18,10 +18,11 @@
 #include <IOKit/hid/IOHIDLib.h>
 #include <Carbon/Carbon.h>
 
+
 //----------------------------------------------------------------------------------------------------------------------------
 
-static void             FDHIDKeyboard_KeyHandler (id, unsigned int, IOHIDValueRef, IOHIDElementRef);
-static void             FDHIDKeyboard_FnHandler (id, unsigned int, IOHIDValueRef, IOHIDElementRef);
+static void             FDHIDKeyboard_KeyHandler (FDHIDDevice*, unsigned int, IOHIDValueRef, IOHIDElementRef);
+static void             FDHIDKeyboard_FnHandler (FDHIDDevice*, unsigned int, IOHIDValueRef, IOHIDElementRef);
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -592,7 +593,7 @@ static const UInt8  sFDHIDInNumPadKey[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-void FDHIDKeyboard_KeyHandler (id device, unsigned int virtualKey, IOHIDValueRef pValue, IOHIDElementRef pElement)
+void FDHIDKeyboard_KeyHandler (_FDHIDDeviceKeyboard *device, unsigned int virtualKey, IOHIDValueRef pValue, IOHIDElementRef pElement)
 {
     FD_UNUSED (pElement);
     FD_ASSERT (pValue != nil);
@@ -608,7 +609,7 @@ void FDHIDKeyboard_KeyHandler (id device, unsigned int virtualKey, IOHIDValueRef
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-void FDHIDKeyboard_FnHandler (id device, unsigned int keycode, IOHIDValueRef pValue, IOHIDElementRef pElement)
+void FDHIDKeyboard_FnHandler (_FDHIDDeviceKeyboard *device, unsigned int keycode, IOHIDValueRef pValue, IOHIDElementRef pElement)
 {
     FD_UNUSED (keycode, pElement);
     FD_ASSERT (pValue != nil);

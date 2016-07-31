@@ -19,8 +19,8 @@
 //----------------------------------------------------------------------------------------------------------------------------
 
 static float    FDHIDGamePad_GetValue (IOHIDValueRef, IOHIDElementRef);
-static void     FDHIDGamePad_AxisHandler (id device, unsigned int, IOHIDValueRef, IOHIDElementRef);
-static void     FDHIDGamePad_ButtonHandler (id device, unsigned int, IOHIDValueRef, IOHIDElementRef);
+static void     FDHIDGamePad_AxisHandler (FDHIDDevice *device, unsigned int, IOHIDValueRef, IOHIDElementRef);
+static void     FDHIDGamePad_ButtonHandler (FDHIDDevice *device, unsigned int, IOHIDValueRef, IOHIDElementRef);
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -263,7 +263,7 @@ inline float   FDHIDGamePad_GetValue (IOHIDValueRef pValue, IOHIDElementRef pEle
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-void FDHIDGamePad_AxisHandler (id device, unsigned int axis, IOHIDValueRef pValue, IOHIDElementRef pElement)
+void FDHIDGamePad_AxisHandler (FDHIDDevice *device, unsigned int axis, IOHIDValueRef pValue, IOHIDElementRef pElement)
 {
     FD_ASSERT (pValue != nil);
     FD_ASSERT (pElement != nil);
@@ -280,7 +280,7 @@ void FDHIDGamePad_AxisHandler (id device, unsigned int axis, IOHIDValueRef pValu
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-void FDHIDGamePad_ButtonHandler (id device, unsigned int button, IOHIDValueRef pValue, IOHIDElementRef pElement)
+void FDHIDGamePad_ButtonHandler (FDHIDDevice *device, unsigned int button, IOHIDValueRef pValue, IOHIDElementRef pElement)
 {
     FD_ASSERT (pValue != nil);
     FD_ASSERT (pElement != nil);

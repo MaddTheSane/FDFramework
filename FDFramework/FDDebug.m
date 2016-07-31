@@ -279,14 +279,7 @@ static NSString*        sFDDebugDefaultName = @"";
 
 - (instancetype) init
 {
-    self = [super init];
-    
-    if (self !=  nil)
-    {
-        self.name = sFDDebugDefaultName;
-    }
-    
-    return self;
+    return [self initWithName:sFDDebugDefaultName];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -313,9 +306,16 @@ void    FDLog (NSString* format, ...)
     
     va_start (argList, format);
     
-    [[FDDebug sharedDebug] logWithFormat: format arguments: argList];
-     
+    FDLogv(format, argList);
+    
     va_end (argList); 
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+void    FDLogv (NSString* format, va_list argList)
+{
+    [[FDDebug sharedDebug] logWithFormat: format arguments: argList];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -326,9 +326,16 @@ void    FDError (NSString* format, ...)
     
     va_start (argList, format);
     
-    [[FDDebug sharedDebug] errorWithFormat: format arguments: argList];
+    FDErrorv(format, argList);
     
     va_end (argList);     
+}
+
+//----------------------------------------------------------------------------------------------------------------------------
+
+void    FDErrorv (NSString* format, va_list argList)
+{
+    [[FDDebug sharedDebug] errorWithFormat: format arguments: argList];
 }
 
 //---------------------------------------------------------------------------------------------------------------------------

@@ -27,6 +27,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL) isEqualTo: (nullable FDDisplayMode*) object;
 - (NSComparisonResult) compare: (FDDisplayMode*) rhs;
 
+- (instancetype) init UNAVAILABLE_ATTRIBUTE;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -23,19 +23,20 @@ typedef struct
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
-                                                                        { CFSTR (IO1BitIndexedPixels),  1 },
-                                                                        { CFSTR (IO2BitIndexedPixels),  2 },
-                                                                        { CFSTR (IO4BitIndexedPixels),  4 },
-                                                                        { CFSTR (IO8BitIndexedPixels),  8 },
-                                                                        { CFSTR (IO16BitDirectPixels), 16 },
-                                                                        { CFSTR (IO32BitDirectPixels), 32 }
-                                                                      };
+static const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
+    { CFSTR (IO1BitIndexedPixels),  1 },
+    { CFSTR (IO2BitIndexedPixels),  2 },
+    { CFSTR (IO4BitIndexedPixels),  4 },
+    { CFSTR (IO8BitIndexedPixels),  8 },
+    { CFSTR (IO16BitDirectPixels), 16 },
+    { CFSTR (IO32BitDirectPixels), 32 },
+    { CFSTR(kIO30BitDirectPixels), 30 },
+    { CFSTR(kIO64BitDirectPixels), 64 },
+};
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 @interface FDDisplayMode()
-
 
 - (instancetype) initWithCGDisplayMode: (CGDisplayModeRef) mode;
 @property (readonly, assign) CGDisplayModeRef cgDisplayMode;
@@ -56,8 +57,7 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 {
     self = [super init];
     
-    if (self != nil)
-    {
+    if (self != nil) {
         [self doesNotRecognizeSelector: _cmd];
         [self release];
     }
@@ -76,14 +76,11 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
         const uint32_t  kMask   = kDisplayModeValidFlag | kDisplayModeNeverShowFlag | kDisplayModeNotGraphicsQualityFlag;
         BOOL            isValid = ((CGDisplayModeGetIOFlags (cgDisplayMode) & kMask) == kDisplayModeValidFlag);
         
-        isValid &= ((CGDisplayModeGetWidth (cgDisplayMode) * CGDisplayModeGetHeight (cgDisplayMode)) > 1);
+        isValid = isValid && ((CGDisplayModeGetWidth (cgDisplayMode) * CGDisplayModeGetHeight (cgDisplayMode)) > 1);
         
-        if (isValid)
-        {
+        if (isValid) {
             mCGDisplayMode = CGDisplayModeRetain (cgDisplayMode);
-        }
-        else
-        {
+        } else {
             [self release];
             return nil;
         }
@@ -96,8 +93,7 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 
 - (void) dealloc
 {
-    if (mCGDisplayMode != NULL)
-    {
+    if (mCGDisplayMode != NULL) {
         CGDisplayModeRelease (mCGDisplayMode);
     }
     
@@ -183,7 +179,7 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 - (BOOL) isEqualTo: (FDDisplayMode*) rhs
 {
     if (!rhs)
-	{
+    {
         return NO;
     }
     return (self.width == rhs.width) &&
@@ -197,8 +193,7 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 
 - (NSComparisonResult) compare: (FDDisplayMode*) rhs
 {
-    if ([self isEqualTo:rhs])
-    {
+    if ([self isEqualTo:rhs]) {
         return NSOrderedSame;
     }
 
@@ -206,18 +201,12 @@ const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
 	const NSUInteger    rhsArea     = rhs.width * rhs.height;
 	NSComparisonResult  result		= NSOrderedDescending;
 	
-	if (lhsArea < rhsArea)
-	{
+	if (lhsArea < rhsArea) {
 		result = NSOrderedAscending;
-	}
-    else if (lhsArea == rhsArea)
-    {
-        if (self.refreshRate < rhs.refreshRate)
-        {
+	} else if (lhsArea == rhsArea) {
+        if (self.refreshRate < rhs.refreshRate) {
             result = NSOrderedAscending;    
-        }
-        else if ((self.stretched == NO) && (rhs.stretched == YES))
-        {
+        } else if ((self.stretched == NO) && (rhs.stretched == YES)) {
             result = NSOrderedAscending;
         }
     }

@@ -18,8 +18,8 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static void     FDHIDMouse_AxisHandler (id, unsigned int, IOHIDValueRef, IOHIDElementRef);
-static void     FDHIDMouse_ButtonHandler (id, unsigned int, IOHIDValueRef, IOHIDElementRef);
+static void     FDHIDMouse_AxisHandler (FDHIDDevice*, unsigned int, IOHIDValueRef, IOHIDElementRef);
+static void     FDHIDMouse_ButtonHandler (FDHIDDevice*, unsigned int, IOHIDValueRef, IOHIDElementRef);
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -102,7 +102,7 @@ FDHIDUsageToDevice gFDHIDMouseUsageMap[] =
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-void FDHIDMouse_AxisHandler (id device, unsigned int axis, IOHIDValueRef pValue, IOHIDElementRef pElement)
+void FDHIDMouse_AxisHandler (FDHIDDevice *device, unsigned int axis, IOHIDValueRef pValue, IOHIDElementRef pElement)
 {
     FD_UNUSED (pElement);
     FD_ASSERT (pValue != nil);
@@ -119,7 +119,7 @@ void FDHIDMouse_AxisHandler (id device, unsigned int axis, IOHIDValueRef pValue,
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-void FDHIDMouse_ButtonHandler (id device, unsigned int button, IOHIDValueRef pValue, IOHIDElementRef pElement)
+void FDHIDMouse_ButtonHandler (FDHIDDevice *device, unsigned int button, IOHIDValueRef pValue, IOHIDElementRef pElement)
 {
     FD_UNUSED (pElement);
     FD_ASSERT (pValue != nil);

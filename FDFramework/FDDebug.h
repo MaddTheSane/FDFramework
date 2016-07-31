@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (class, readonly, getter=isDebuggerAttached) BOOL debuggerAttached;
 #endif
 
-- (instancetype) init NS_DESIGNATED_INITIALIZER;
+- (instancetype) init;
 - (instancetype) initWithName: (NSString*) name NS_DESIGNATED_INITIALIZER;
 
 @property (nonatomic, copy) NSString *name;
@@ -58,7 +58,9 @@ NS_ASSUME_NONNULL_BEGIN
 //----------------------------------------------------------------------------------------------------------------------------
 
 FD_EXTERN void    FDLog (NSString* format, ...) NS_FORMAT_FUNCTION(1,2);
+FD_EXTERN void    FDLogv (NSString* format, va_list list);
 FD_EXTERN void    FDError (NSString* format, ...) NS_FORMAT_FUNCTION(1,2);
+FD_EXTERN void    FDErrorv (NSString* format, va_list list);
 
 NS_ASSUME_NONNULL_END
 
