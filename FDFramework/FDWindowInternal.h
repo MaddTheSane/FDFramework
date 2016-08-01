@@ -18,7 +18,7 @@
 - (void) initGrowBoxTexture;
 - (void) drawGrowbox;
 
-@property (readwrite, retain) NSOpenGLContext *openGLContext;
+@property (readwrite, strong) NSOpenGLContext *openGLContext;
 
 - (void) setResizeHandler: (FDResizeHandler) pResizeHandler forContext: (void*) pContext;
 - (void) onResizeView: (NSNotification*) notification;

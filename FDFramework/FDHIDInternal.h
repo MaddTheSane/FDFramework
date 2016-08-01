@@ -67,7 +67,7 @@ NS_ASSUME_NONNULL_BEGIN
     NSString*               mProductName;
     FDHIDActuator*          mActuator;
     const FDHIDDeviceDesc*  mpDeviceDesc;
-    FDHIDManager*           mDelegate;
+    FDHIDManager*           __weak mDelegate;
 }
 
 + (NSArray<NSDictionary<NSString*,NSNumber*>*>*) matchingDictionaries: (const FDHIDUsageToDevice*) usageMap withCount: (NSUInteger) numUsages;
@@ -77,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithDevice: (IOHIDDeviceRef) pDevice deviceDescriptors: (const FDHIDDeviceDesc*) deviceDescriptors;
 
-@property (assign, nullable) FDHIDManager* delegate;
+@property (weak, nullable) FDHIDManager* delegate;
 - (void) pushEvent: (const FDHIDEvent*) pEvent;
 
 @property (readonly, assign) IOHIDDeviceRef iohidDeviceRef;

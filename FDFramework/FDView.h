@@ -17,10 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) initWithFrame: (NSRect) frameRect;
 
-@property (nonatomic, retain, null_resettable) NSCursor *cursor;
+@property (nonatomic, strong, null_resettable) NSCursor *cursor;
 @property BOOL vsync;
 
-@property (readonly, nonatomic, retain) NSOpenGLContext *openGLContext;
+@property (readonly, nonatomic, strong) NSOpenGLContext *openGLContext;
 
 @end
 

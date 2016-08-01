@@ -16,7 +16,6 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static dispatch_once_t  sFDDebugPredicate   = 0;
 static FDDebug*         sFDDebugInstance    = nil;
 static NSString*        sFDDebugDefaultName = @"";
 
@@ -270,6 +269,7 @@ static NSString*        sFDDebugDefaultName = @"";
 
 + (FDDebug*) sharedDebug
 {
+    static dispatch_once_t  sFDDebugPredicate   = 0;
     dispatch_once (&sFDDebugPredicate, ^{ sFDDebugInstance = [[FDDebug alloc] initWithName: sFDDebugDefaultName]; });
     
     return sFDDebugInstance;

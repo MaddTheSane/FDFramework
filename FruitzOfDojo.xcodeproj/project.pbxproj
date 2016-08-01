@@ -14,9 +14,9 @@
 		5564785A1CECEE3300ECD01B /* FDAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478321CECEE3300ECD01B /* FDAudioFile.m */; };
 		5564785B1CECEE3300ECD01B /* FDAudioInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478331CECEE3300ECD01B /* FDAudioInternal.h */; };
 		5564785C1CECEE3300ECD01B /* FDAudioMixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478341CECEE3300ECD01B /* FDAudioMixer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5564785D1CECEE3300ECD01B /* FDAudioMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478351CECEE3300ECD01B /* FDAudioMixer.m */; };
+		5564785D1CECEE3300ECD01B /* FDAudioMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478351CECEE3300ECD01B /* FDAudioMixer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5564785E1CECEE3300ECD01B /* FDDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478361CECEE3300ECD01B /* FDDebug.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5564785F1CECEE3300ECD01B /* FDDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478371CECEE3300ECD01B /* FDDebug.m */; };
+		5564785F1CECEE3300ECD01B /* FDDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478371CECEE3300ECD01B /* FDDebug.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		556478601CECEE3300ECD01B /* FDDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478381CECEE3300ECD01B /* FDDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		556478611CECEE3300ECD01B /* FDDisplay.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478391CECEE3300ECD01B /* FDDisplay.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		556478621CECEE3300ECD01B /* FDDisplay.m in Sources */ = {isa = PBXBuildFile; fileRef = 5564783A1CECEE3300ECD01B /* FDDisplay.m */; };
@@ -32,7 +32,7 @@
 		5564786D1CECEE3300ECD01B /* FDHIDInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478451CECEE3300ECD01B /* FDHIDInternal.h */; };
 		5564786E1CECEE3300ECD01B /* FDHIDKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478461CECEE3300ECD01B /* FDHIDKeyboard.m */; };
 		5564786F1CECEE3300ECD01B /* FDHIDManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478471CECEE3300ECD01B /* FDHIDManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		556478701CECEE3300ECD01B /* FDHIDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478481CECEE3300ECD01B /* FDHIDManager.m */; };
+		556478701CECEE3300ECD01B /* FDHIDManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478481CECEE3300ECD01B /* FDHIDManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		556478711CECEE3300ECD01B /* FDHIDMouse.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478491CECEE3300ECD01B /* FDHIDMouse.m */; };
 		556478721CECEE3300ECD01B /* FDLinkView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5564784A1CECEE3300ECD01B /* FDLinkView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		556478731CECEE3300ECD01B /* FDLinkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5564784B1CECEE3300ECD01B /* FDLinkView.m */; };
@@ -491,7 +491,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -513,7 +513,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;

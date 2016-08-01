@@ -87,7 +87,6 @@
     if (self != nil)
     {
         [self doesNotRecognizeSelector: _cmd];
-        [self release];
     }
     
     return nil;

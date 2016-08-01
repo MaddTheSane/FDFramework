@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (readonly, copy) NSString *deviceType;
 
 @property (readonly) BOOL hasActuator;
-@property (readonly, retain, nullable) FDHIDActuator *actuator;
+@property (readonly, strong, nullable) FDHIDActuator *actuator;
 
 @end
 

@@ -54,22 +54,20 @@ static NSString* getPreferredDisplayName(CGDirectDisplayID displayID)
             NSDictionary *namesForDisplay = displayInfoDict[@kDisplayProductName];
             
             if (namesForDisplay) {
-                NSString *tempName = [namesForDisplay[[NSLocale autoupdatingCurrentLocale].localeIdentifier] retain];
+                NSString *tempName = namesForDisplay[[NSLocale autoupdatingCurrentLocale].localeIdentifier];
                 if (!tempName) {
-                    tempName = [namesForDisplay[@"en_US"] retain];
+                    tempName = namesForDisplay[@"en_US"];
                 }
                 if (tempName) {
                     name = tempName;
                 }
             }
-            
-            [displayInfoDict release];
         }
         
         IOObjectRelease(displayServicePort);
     }
     
-    return [name autorelease];
+    return name;
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -144,7 +142,7 @@ static NSString* getPreferredDisplayName(CGDirectDisplayID displayID)
             
             for (uint32_t i = 0; i < numDisplays; ++i)
             {
-                [displayList addObject: [[[FDDisplay alloc] initWithCGDisplayID: pDisplays[i]] autorelease]];
+                [displayList addObject: [[FDDisplay alloc] initWithCGDisplayID: pDisplays[i]]];
             }
         }
         
@@ -277,7 +275,6 @@ static NSString* getPreferredDisplayName(CGDirectDisplayID displayID)
     if (self != nil)
     {
         [self doesNotRecognizeSelector: _cmd];
-        [self release];
     }
     
     return nil;
@@ -349,7 +346,6 @@ static NSString* getPreferredDisplayName(CGDirectDisplayID displayID)
                     {
                         [modeList addObject: displayMode];
                     }
-                    [displayMode release];
                 }
             }
             
@@ -358,14 +354,12 @@ static NSString* getPreferredDisplayName(CGDirectDisplayID displayID)
             [modeList sortUsingSelector: @selector (compare:)];
             
             mDisplayModes = [modeList copy];
-            [modeList release];
         }
         
         mDisplayName    = [displayName copy];
         mCGDisplayId    = displayId;
         mCGGamma        = 1.0f;
         mCanSetGamma    = [self readGammaTable: &mGammaTable];
-        [displayName release];
     }
     
     return self;
@@ -377,12 +371,6 @@ static NSString* getPreferredDisplayName(CGDirectDisplayID displayID)
 {
     [self setGamma: 1.0f update: YES];
     [self setDisplayMode: mDisplayModeOriginal];
-    
-    [mDisplayName release];
-    [mDisplayModes release];
-    [mDisplayModeOriginal release];
-    
-    [super dealloc];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -394,7 +382,7 @@ static NSString* getPreferredDisplayName(CGDirectDisplayID displayID)
     
     if (cgDisplayMode != NULL)
     {
-        currentMode = [[[FDDisplayMode alloc] initWithCGDisplayMode: cgDisplayMode] autorelease];
+        currentMode = [[FDDisplayMode alloc] initWithCGDisplayMode: cgDisplayMode];
         
         CGDisplayModeRelease (cgDisplayMode);
     }

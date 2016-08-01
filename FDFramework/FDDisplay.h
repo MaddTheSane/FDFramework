@@ -28,8 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (readonly, copy) NSString *description;
 
-@property (readonly, retain) FDDisplayMode* displayMode;
-@property (readonly, retain) FDDisplayMode* originalMode;
+@property (readonly, strong) FDDisplayMode* displayMode;
+@property (readonly, strong) FDDisplayMode* originalMode;
 
 @property (readonly, copy) NSArray<FDDisplayMode *> *displayModes;
 

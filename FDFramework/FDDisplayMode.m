@@ -59,7 +59,6 @@ static const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
     
     if (self != nil) {
         [self doesNotRecognizeSelector: _cmd];
-        [self release];
     }
     
     return nil;
@@ -81,7 +80,6 @@ static const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
         if (isValid) {
             mCGDisplayMode = CGDisplayModeRetain (cgDisplayMode);
         } else {
-            [self release];
             return nil;
         }
     }
@@ -97,7 +95,6 @@ static const PixelEncodingToBitsPerPixel   skPixelEncodingToBitsPerPixel[] = {
         CGDisplayModeRelease (mCGDisplayMode);
     }
     
-    [super dealloc];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
