@@ -265,12 +265,7 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
 {
     [self stop];
     
-    const char* path    = url.path.fileSystemRepresentation;
-    CFIndex     pathLen = strlen (path);
-    CFURLRef    cfPath  = CFURLCreateFromFileSystemRepresentation (kCFAllocatorDefault, (const UInt8*) path, pathLen, false);
-    OSStatus    err     = AudioFileOpenURL (cfPath, kAudioFileReadPermission, 0, &mFileId);
-    
-    CFRelease (cfPath);
+    OSStatus    err     = AudioFileOpenURL ((__bridge CFURLRef)url, kAudioFileReadPermission, 0, &mFileId);
     
     if (err == noErr)
     {

@@ -14,13 +14,13 @@ extension FDDisplayMode: Comparable {
 }
 
 public func ==(lhs: FDDisplayMode, rhs: FDDisplayMode) -> Bool {
-    return lhs.isEqualTo(rhs)
+    return lhs.isEqual(to: rhs)
 }
 
 public func <(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
-    return lhs.compare(rhs) == .OrderedAscending
+    return lhs.compare(rhs) == .orderedAscending
 }
 
 public func >(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
-    return lhs.compare(rhs) == .OrderedDescending
+    return lhs.compare(rhs) == .orderedDescending
 }
