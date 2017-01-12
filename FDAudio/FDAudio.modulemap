@@ -1,0 +1,12 @@
+framework module FDAudio {
+    umbrella header "FDAudio.h"
+    
+    conflict FruitzOfDojo "Just use only FruitzOfDojo, as we share classes"
+    export *
+    module * { export * }
+    
+    module FDDebug {
+        textual header "FDDebug.h"
+        export *
+    }
+}

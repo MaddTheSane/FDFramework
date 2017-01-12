@@ -17,6 +17,20 @@
 		5531D4D91E28147700BDBF21 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531D4D81E28147700BDBF21 /* AppKit.framework */; };
 		5531D4DB1E28147C00BDBF21 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531D4DA1E28147C00BDBF21 /* Cocoa.framework */; };
 		5531D4DD1E2814D500BDBF21 /* ApplicationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531D4DC1E2814D500BDBF21 /* ApplicationServices.framework */; };
+		5531D50A1E282D6000BDBF21 /* FDAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = 5531D5081E282D6000BDBF21 /* FDAudio.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5531D50E1E282D7100BDBF21 /* FDAudioBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5564782F1CECEE3300ECD01B /* FDAudioBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5531D50F1E282D7100BDBF21 /* FDAudioBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478301CECEE3300ECD01B /* FDAudioBuffer.m */; };
+		5531D5101E282D7100BDBF21 /* FDAudioFile.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478311CECEE3300ECD01B /* FDAudioFile.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5531D5111E282D7100BDBF21 /* FDAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478321CECEE3300ECD01B /* FDAudioFile.m */; };
+		5531D5121E282D7100BDBF21 /* FDAudioInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478331CECEE3300ECD01B /* FDAudioInternal.h */; };
+		5531D5131E282D7100BDBF21 /* FDAudioMixer.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478341CECEE3300ECD01B /* FDAudioMixer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5531D5141E282D7100BDBF21 /* FDAudioMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478351CECEE3300ECD01B /* FDAudioMixer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5531D5151E282DC900BDBF21 /* FDDebug.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478371CECEE3300ECD01B /* FDDebug.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5531D5161E282DCC00BDBF21 /* FDDebug.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478361CECEE3300ECD01B /* FDDebug.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5531D5171E282DE300BDBF21 /* FDDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478381CECEE3300ECD01B /* FDDefines.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5531D5191E282E8200BDBF21 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531D4CA1E2813DD00BDBF21 /* AudioUnit.framework */; };
+		5531D51A1E282E8700BDBF21 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531D4CC1E28142B00BDBF21 /* AudioToolbox.framework */; };
+		5531D51B1E282E8B00BDBF21 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531D4D51E28147200BDBF21 /* Foundation.framework */; };
 		556478281CECEE1000ECD01B /* FruitzOfDojo.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478271CECEE1000ECD01B /* FruitzOfDojo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		556478571CECEE3300ECD01B /* FDAudioBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5564782F1CECEE3300ECD01B /* FDAudioBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		556478581CECEE3300ECD01B /* FDAudioBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478301CECEE3300ECD01B /* FDAudioBuffer.m */; };
@@ -86,6 +100,10 @@
 		5531D4D81E28147700BDBF21 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5531D4DA1E28147C00BDBF21 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5531D4DC1E2814D500BDBF21 /* ApplicationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ApplicationServices.framework; path = System/Library/Frameworks/ApplicationServices.framework; sourceTree = SDKROOT; };
+		5531D5061E282D6000BDBF21 /* FDAudio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FDAudio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5531D5081E282D6000BDBF21 /* FDAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDAudio.h; sourceTree = "<group>"; };
+		5531D5091E282D6000BDBF21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5531D5181E282E5900BDBF21 /* FDAudio.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = FDAudio.modulemap; sourceTree = "<group>"; };
 		556478241CECEE1000ECD01B /* FruitzOfDojo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FruitzOfDojo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		556478271CECEE1000ECD01B /* FruitzOfDojo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FruitzOfDojo.h; sourceTree = "<group>"; };
 		556478291CECEE1000ECD01B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -139,6 +157,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5531D5021E282D6000BDBF21 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5531D5191E282E8200BDBF21 /* AudioUnit.framework in Frameworks */,
+				5531D51B1E282E8B00BDBF21 /* Foundation.framework in Frameworks */,
+				5531D51A1E282E8700BDBF21 /* AudioToolbox.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		556478201CECEE1000ECD01B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -184,11 +212,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5531D5071E282D6000BDBF21 /* FDAudio */ = {
+			isa = PBXGroup;
+			children = (
+				5531D5081E282D6000BDBF21 /* FDAudio.h */,
+				5531D5091E282D6000BDBF21 /* Info.plist */,
+				5531D5181E282E5900BDBF21 /* FDAudio.modulemap */,
+			);
+			path = FDAudio;
+			sourceTree = "<group>";
+		};
 		5564781A1CECEE1000ECD01B = {
 			isa = PBXGroup;
 			children = (
 				556478261CECEE1000ECD01B /* FruitzOfDojo */,
 				55F926111CED18F900145952 /* FruitzOfDojoSwift */,
+				5531D5071E282D6000BDBF21 /* FDAudio */,
 				5531D4C91E2813DD00BDBF21 /* Frameworks */,
 				556478251CECEE1000ECD01B /* Products */,
 			);
@@ -200,6 +239,7 @@
 			children = (
 				556478241CECEE1000ECD01B /* FruitzOfDojo.framework */,
 				55F926101CED18F900145952 /* FruitzOfDojoSwift.framework */,
+				5531D5061E282D6000BDBF21 /* FDAudio.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -271,6 +311,20 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		5531D5031E282D6000BDBF21 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5531D5121E282D7100BDBF21 /* FDAudioInternal.h in Headers */,
+				5531D50A1E282D6000BDBF21 /* FDAudio.h in Headers */,
+				5531D5161E282DCC00BDBF21 /* FDDebug.h in Headers */,
+				5531D50E1E282D7100BDBF21 /* FDAudioBuffer.h in Headers */,
+				5531D5101E282D7100BDBF21 /* FDAudioFile.h in Headers */,
+				5531D5171E282DE300BDBF21 /* FDDefines.h in Headers */,
+				5531D5131E282D7100BDBF21 /* FDAudioMixer.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		556478211CECEE1000ECD01B /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -312,6 +366,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		5531D5051E282D6000BDBF21 /* FDAudio */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5531D50D1E282D6000BDBF21 /* Build configuration list for PBXNativeTarget "FDAudio" */;
+			buildPhases = (
+				5531D5011E282D6000BDBF21 /* Sources */,
+				5531D5021E282D6000BDBF21 /* Frameworks */,
+				5531D5031E282D6000BDBF21 /* Headers */,
+				5531D5041E282D6000BDBF21 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FDAudio;
+			productName = FDAudio;
+			productReference = 5531D5061E282D6000BDBF21 /* FDAudio.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		556478231CECEE1000ECD01B /* FruitzOfDojo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5564782C1CECEE1000ECD01B /* Build configuration list for PBXNativeTarget "FruitzOfDojo" */;
@@ -358,6 +430,10 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "C.W. Betts";
 				TargetAttributes = {
+					5531D5051E282D6000BDBF21 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
 					556478231CECEE1000ECD01B = {
 						CreatedOnToolsVersion = 7.3.1;
 					};
@@ -380,11 +456,19 @@
 			targets = (
 				556478231CECEE1000ECD01B /* FruitzOfDojo */,
 				55F9260F1CED18F900145952 /* FruitzOfDojoSwift */,
+				5531D5051E282D6000BDBF21 /* FDAudio */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5531D5041E282D6000BDBF21 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		556478221CECEE1000ECD01B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -402,6 +486,17 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5531D5011E282D6000BDBF21 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5531D5141E282D7100BDBF21 /* FDAudioMixer.m in Sources */,
+				5531D5151E282DC900BDBF21 /* FDDebug.m in Sources */,
+				5531D5111E282D7100BDBF21 /* FDAudioFile.m in Sources */,
+				5531D50F1E282D7100BDBF21 /* FDAudioBuffer.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5564781F1CECEE1000ECD01B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -448,6 +543,48 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5531D50B1E282D6000BDBF21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = FDAudio/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = FDAudio/FDAudio.modulemap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.maddthesane.FDAudio;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		5531D50C1E282D6000BDBF21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = FDAudio/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = FDAudio/FDAudio.modulemap;
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.maddthesane.FDAudio;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		5564782A1CECEE1000ECD01B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -631,6 +768,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5531D50D1E282D6000BDBF21 /* Build configuration list for PBXNativeTarget "FDAudio" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5531D50B1E282D6000BDBF21 /* Debug */,
+				5531D50C1E282D6000BDBF21 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		5564781E1CECEE1000ECD01B /* Build configuration list for PBXProject "FruitzOfDojo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
