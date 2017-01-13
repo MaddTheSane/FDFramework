@@ -261,6 +261,35 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
 
 //---------------------------------------------------------------------------------------------------------------------------
 
+- (BOOL) play
+{
+    OSStatus err = 0;
+    switch (mStatus) {
+        case eFDAudioFileStatusPaused:
+            err = [self startAtFrame: mPosition loop: mIsLooping];
+            break;
+            
+        case eFDAudioFileStatusPlaying:
+            err = noErr;
+            break;
+            
+        case eFDAudioFileStatusFinished:
+            mPosition = 0;
+            err = [self startAtFrame: mPosition loop: mIsLooping];
+            break;
+            
+        case eFDAudioFileStatusIdle:
+        case eFDAudioFileStatusSuspended:
+        default:
+            err = -1; // generic failure value
+            break;
+    }
+
+    return err == noErr;
+}
+
+//---------------------------------------------------------------------------------------------------------------------------
+
 - (BOOL) startFile: (NSURL*) url loop: (BOOL) loop
 {
     [self stop];
@@ -275,6 +304,7 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
     
     if (err == noErr)
     {
+        _file = url;
         err = [self startAtFrame: 0 loop: loop];
     }
     
@@ -306,6 +336,7 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
         }
         
         mFileId = NULL;
+        _file = nil;
     }
     
     return err == noErr;

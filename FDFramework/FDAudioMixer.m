@@ -10,6 +10,7 @@
 #import "FDAudioMixer.h"
 #import "FDAudioInternal.h"
 #import "FDDefines.h"
+#import "FDAudioFile.h"
 
 #import <Cocoa/Cocoa.h>
 #include <CoreAudio/CoreAudio.h>
@@ -38,8 +39,8 @@ static FDAudioMixer*    sFDAudioMixerShared     = nil;
     AUGraph             mAudioGraph;
     AudioUnit           mMixerUnit;
     AUNode              mMixerNode;
-    NSMutableSet*       mBusNumbers;
-    NSMutableArray*     mObservers;
+    NSMutableSet<NSNumber*>*        mBusNumbers;
+    NSMutableArray<FDAudioFile*>*   mObservers;
 }
 @synthesize audioGraph = mAudioGraph;
 @synthesize mixerNode = mMixerNode;
@@ -224,7 +225,7 @@ static FDAudioMixer*    sFDAudioMixerShared     = nil;
     
     while (1)
     {
-        NSNumber* busNumber = [[NSNumber alloc] initWithInt: i];
+        NSNumber* busNumber = [[NSNumber alloc] initWithUnsignedInt: i];
         
         if ([mBusNumbers containsObject: busNumber] == NO)
         {

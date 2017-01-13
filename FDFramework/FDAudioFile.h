@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FDAudioFile : NSObject
 
+@property (readonly, strong, nullable) NSURL *file;
+
 - (instancetype) init NS_UNAVAILABLE;
 - (nullable instancetype) initWithMixer: (nullable FDAudioMixer*) mixer NS_DESIGNATED_INITIALIZER;
 
@@ -24,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL) startFile: (NSURL*) url loop: (BOOL) loop;
 - (BOOL) stop;
+- (BOOL) play;
 
 - (void) pause;
 - (void) resume;
