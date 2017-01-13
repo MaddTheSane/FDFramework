@@ -8,7 +8,7 @@
 //----------------------------------------------------------------------------------------------------------------------------
 
 #import "FDDefines.h"
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -23,11 +23,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FDDebug : NSObject
 
-+ (FDDebug*) sharedDebug;
-+ (BOOL) isDebuggerAttached;
 #if __has_feature(objc_class_property)
 @property (class, readonly, retain) FDDebug *sharedDebug;
 @property (class, readonly, getter=isDebuggerAttached) BOOL debuggerAttached;
+#else
++ (FDDebug*) sharedDebug;
++ (BOOL) isDebuggerAttached;
 #endif
 
 - (instancetype) init;

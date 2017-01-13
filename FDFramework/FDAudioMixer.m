@@ -15,6 +15,7 @@
 #import <Cocoa/Cocoa.h>
 #include <CoreAudio/CoreAudio.h>
 #include <AudioToolbox/AudioToolbox.h>
+#include <AudioUnit/AudioUnit.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 

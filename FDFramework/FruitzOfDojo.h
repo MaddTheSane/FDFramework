@@ -14,9 +14,6 @@ FOUNDATION_EXPORT double FruitzOfDojoVersionNumber;
 //! Project version string for FruitzOfDojo.
 FOUNDATION_EXPORT const unsigned char FruitzOfDojoVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <FruitzOfDojo/PublicHeader.h>
-
-
 #import <FruitzOfDojo/FDAudioBuffer.h>
 #import <FruitzOfDojo/FDAudioFile.h>
 #import <FruitzOfDojo/FDAudioMixer.h>

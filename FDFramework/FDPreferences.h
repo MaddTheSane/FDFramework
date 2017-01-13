@@ -17,9 +17,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype) init UNAVAILABLE_ATTRIBUTE;
 
-+ (FDPreferences*) sharedPrefs;
 #if __has_feature(objc_class_property)
 @property (class, readonly, retain) FDPreferences *sharedPrefs;
+#else
++ (FDPreferences*) sharedPrefs;
 #endif
 
 - (void) registerDefaults: (NSDictionary<NSString*,id>*) dictionary;

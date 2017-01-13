@@ -9,7 +9,7 @@
 
 #import "FDAudioMixer.h"
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ typedef NSUInteger (*FDAudioBufferCallback) (void* __null_unspecified pDst, NSUI
 
 @interface FDAudioBuffer : NSObject
 
-- (__null_unspecified instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (nonnull instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (nullable instancetype) initWithMixer: (nullable FDAudioMixer*) mixer
                      frequency: (NSUInteger) frequency
                 bitsPerChannel: (NSUInteger) bitsPerChannel

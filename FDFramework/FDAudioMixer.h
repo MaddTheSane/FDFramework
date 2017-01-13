@@ -7,15 +7,16 @@
 //
 //----------------------------------------------------------------------------------------------------------------------------
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 @interface FDAudioMixer : NSObject
 
-+ (nullable FDAudioMixer*) sharedAudioMixer;
 #if __has_feature(objc_class_property)
 @property (class, readonly, retain, nullable) FDAudioMixer *sharedAudioMixer;
+#else
++ (nullable FDAudioMixer*) sharedAudioMixer;
 #endif
 
 - (nullable instancetype) init;
