@@ -18,3 +18,4 @@ FOUNDATION_EXPORT const unsigned char FDAudioVersionString[];
 #import <FDAudio/FDAudioMixer.h>
 #import <FDAudio/FDAudioBuffer.h>
 #import <FDAudio/FDAudioFile.h>
+#import <FDAudio/FDDebug.h>
