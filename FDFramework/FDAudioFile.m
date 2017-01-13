@@ -352,29 +352,30 @@ static void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegio
     }
     
     FDAudioFileStatus oldStatus = mStatus;
-    OSStatus err;
+    OSStatus err = 0;
     if (mStatus == eFDAudioFileStatusPlaying)
     {
         [self pause];
     }
-    AudioTimeStamp startTime = { 0 };
-    
-    startTime.mFlags        = kAudioTimeStampSampleTimeValid;
-    startTime.mSampleTime   = -1;
-
-    err = AudioUnitSetProperty (mAudioUnit, kAudioUnitProperty_CurrentPlayTime, kAudioUnitScope_Global, 0,
-                                &startTime, sizeof (startTime));
-    
-    if (oldStatus == eFDAudioFileStatusPlaying)
+    else if (oldStatus == eFDAudioFileStatusFinished)
     {
-        [self resume];
+        err = AudioUnitReset (mAudioUnit, kAudioUnitScope_Global, 0);
+        if (err == noErr)
+        {
+            mStatus = eFDAudioFileStatusPaused;
+        }
     }
     
     if (err == noErr)
     {
         mPosition = 0;
     }
-
+    
+    if (oldStatus == eFDAudioFileStatusPlaying)
+    {
+        [self resume];
+    }
+    
     return err == noErr;
 }
 

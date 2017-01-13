@@ -4,9 +4,10 @@ framework module FDAudio {
     export *
     module * { export * }
     
-    module FDDebug {
+    explicit module FDDebug {
         textual header "FDDebug.h"
         export *
     }
+    
     conflict FruitzOfDojo, "Just use only FruitzOfDojo, as we share classes"
 }
