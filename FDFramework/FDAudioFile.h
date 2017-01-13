@@ -27,6 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL) startFile: (NSURL*) url loop: (BOOL) loop;
 - (BOOL) stop;
 - (BOOL) play;
+- (BOOL) restart;
 
 - (void) pause;
 - (void) resume;
