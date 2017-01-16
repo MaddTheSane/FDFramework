@@ -25,15 +25,15 @@ static void     FDHIDMouse_ButtonHandler (FDHIDDevice*, unsigned int, IOHIDValue
 
 static FDHIDButtonMap   sFDHIDMouseDefaultAxisMap[] = 
 {
-    { kHIDUsage_GD_X,           eFDHIDMouseAxisX,           &FDHIDMouse_AxisHandler             }, 
-    { kHIDUsage_GD_Y,           eFDHIDMouseAxisY,           &FDHIDMouse_AxisHandler             },
+    { kHIDUsage_GD_X,           FDHIDMouseAxisX,            &FDHIDMouse_AxisHandler             },
+    { kHIDUsage_GD_Y,           FDHIDMouseAxisY,            &FDHIDMouse_AxisHandler             },
     { kHIDUsage_GD_Z,           0,                          NULL                                },
     { kHIDUsage_GD_Rx,          0,                          NULL                                },
     { kHIDUsage_GD_Ry,          0,                          NULL                                },
     { kHIDUsage_GD_Rz,          0,                          NULL                                },
     { kHIDUsage_GD_Slider,      0,                          NULL                                },
     { kHIDUsage_GD_Dial,        0,                          NULL                                },
-    { kHIDUsage_GD_Wheel,       eFDHIDMouseAxisWheel,       &FDHIDMouse_AxisHandler             }
+    { kHIDUsage_GD_Wheel,       FDHIDMouseAxisWheel,        &FDHIDMouse_AxisHandler             }
 };
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -110,7 +110,7 @@ void FDHIDMouse_AxisHandler (FDHIDDevice *device, unsigned int axis, IOHIDValueR
     FDHIDEvent event = { 0 };
     
     event.mDevice   = device;
-    event.mType     = eFDHIDEventTypeMouseAxis;
+    event.mType     = FDHIDEventTypeMouseAxis;
     event.mButton   = axis;
     event.mIntVal   = (signed int) IOHIDValueGetIntegerValue (pValue);
     
@@ -127,7 +127,7 @@ void FDHIDMouse_ButtonHandler (FDHIDDevice *device, unsigned int button, IOHIDVa
     FDHIDEvent      event = { 0 };
     
     event.mDevice   = device;
-    event.mType     = eFDHIDEventTypeMouseButton;
+    event.mType     = FDHIDEventTypeMouseButton;
     event.mButton   = button;
     event.mIntVal   = (IOHIDValueGetIntegerValue (pValue) != 0);
     

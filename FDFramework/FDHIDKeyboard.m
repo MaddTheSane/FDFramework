@@ -295,7 +295,7 @@ FDHIDUsageToDevice gFDHIDKeyboardUsageMap[] =
 
 static const UInt8  sFDHIDSpecialKey[] =
 {
-    eFDHIDKeyUpArrow,       eFDHIDKeyDownArrow,     eFDHIDKeyLeftArrow,     eFDHIDKeyRightArrow,
+    FDHIDKeyUpArrow,        FDHIDKeyDownArrow,      FDHIDKeyLeftArrow,      FDHIDKeyRightArrow,
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
@@ -304,39 +304,39 @@ static const UInt8  sFDHIDSpecialKey[] =
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
-    0,                      0,                      0,                      eFDHIDKeyInsert,
-    eFDHIDKeyDelete,        eFDHIDKeyHome,          0,                      eFDHIDKeyEnd,
-    eFDHIDKeyPageUp,        eFDHIDKeyPageDown,      0,                      0,
-    eFDHIDKeyPause,         0,                      0,                      0,
+    0,                      0,                      0,                      FDHIDKeyInsert,
+    FDHIDKeyDelete,         FDHIDKeyHome,           0,                      FDHIDKeyEnd,
+    FDHIDKeyPageUp,         FDHIDKeyPageDown,       0,                      0,
+    FDHIDKeyPause,          0,                      0,                      0,
     0,                      0,                      0,                      0,
-    0,                      eFDHIDKeyNumLock,       0,                      0,                                                               
+    0,                      FDHIDKeyNumLock,        0,                      0,                                                               
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
-    0,                      0,                      eFDHIDKeyInsert
+    0,                      0,                      FDHIDKeyInsert
 };
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 static const UInt8  sFDHIDSpecialKeyFn[] =
 {
-    eFDHIDKeyPageUp,        eFDHIDKeyPageDown,      eFDHIDKeyHome,          eFDHIDKeyEnd,
-    eFDHIDKeyF1,            eFDHIDKeyF2,            eFDHIDKeyF3,            eFDHIDKeyF4,
-    eFDHIDKeyF5,            eFDHIDKeyF6,            eFDHIDKeyF7,            eFDHIDKeyF8,
-    eFDHIDKeyF9,            eFDHIDKeyF10,           eFDHIDKeyF11,           eFDHIDKeyF12,
-    eFDHIDKeyF13,           eFDHIDKeyF14,           eFDHIDKeyF15,           0,
+    FDHIDKeyPageUp,         FDHIDKeyPageDown,       FDHIDKeyHome,           FDHIDKeyEnd,
+    FDHIDKeyF1,             FDHIDKeyF2,             FDHIDKeyF3,             FDHIDKeyF4,
+    FDHIDKeyF5,             FDHIDKeyF6,             FDHIDKeyF7,             FDHIDKeyF8,
+    FDHIDKeyF9,             FDHIDKeyF10,            FDHIDKeyF11,            FDHIDKeyF12,
+    FDHIDKeyF13,            FDHIDKeyF14,            FDHIDKeyF15,            0,
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
-    0,                      0,                      0,                      eFDHIDKeyInsert,
-    eFDHIDKeyDelete,        eFDHIDKeyHome,          0,                      eFDHIDKeyEnd,
-    eFDHIDKeyPageUp,        eFDHIDKeyPageDown,      0,                      0,
-    eFDHIDKeyPause,         0,                      0,                      0,
+    0,                      0,                      0,                      FDHIDKeyInsert,
+    FDHIDKeyDelete,         FDHIDKeyHome,           0,                      FDHIDKeyEnd,
+    FDHIDKeyPageUp,         FDHIDKeyPageDown,       0,                      0,
+    FDHIDKeyPause,          0,                      0,                      0,
     0,                      0,                      0,                      0,
-    0,                      eFDHIDKeyNumLock,       0,                      0,                                                               
+    0,                      FDHIDKeyNumLock,        0,                      0,
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
-    0,                      0,                      eFDHIDKeyInsert
+    0,                      0,                      FDHIDKeyInsert
 };
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -359,14 +359,14 @@ static const UInt8  sFDHIDInNumPadKey[] =
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
     0,                      0,                      0,                      0,
-    0,                      eFDHIDKeyPadPeriod,     0,                      eFDHIDKeyPadAsterisk,
-    0,                      eFDHIDKeyPadPlus,       0,                      0,
+    0,                      FDHIDKeyPadPeriod,      0,                      FDHIDKeyPadAsterisk,
+    0,                      FDHIDKeyPadPlus,        0,                      0,
     0,                      0,                      0,                      0,
-    eFDHIDKeyPadEnter,      eFDHIDKeyPadSlash,      eFDHIDKeyPadMinus,      0,
-    0,                      eFDHIDKeyPadEqual,      eFDHIDKeyPad0,          eFDHIDKeyPad1,
-    eFDHIDKeyPad2,          eFDHIDKeyPad3,          eFDHIDKeyPad4,          eFDHIDKeyPad5,
-    eFDHIDKeyPad6,          eFDHIDKeyPad7,          0,                      eFDHIDKeyPad8,
-    eFDHIDKeyPad9
+    FDHIDKeyPadEnter,       FDHIDKeyPadSlash,       FDHIDKeyPadMinus,       0,
+    0,                      FDHIDKeyPadEqual,       FDHIDKeyPad0,           FDHIDKeyPad1,
+    FDHIDKeyPad2,           FDHIDKeyPad3,           FDHIDKeyPad4,           FDHIDKeyPad5,
+    FDHIDKeyPad6,           FDHIDKeyPad7,           0,                      FDHIDKeyPad8,
+    FDHIDKeyPad9
 };
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -457,7 +457,7 @@ static const UInt8  sFDHIDInNumPadKey[] =
     FDHIDEvent          keyEvent = { 0 };
     
     keyEvent.mDevice    = self;
-    keyEvent.mType      = eFDHIDEventTypeKeyboard;
+    keyEvent.mType      = FDHIDEventTypeKeyboard;
     
     switch (eventType)
     {
@@ -536,7 +536,7 @@ static const UInt8  sFDHIDInNumPadKey[] =
                 
                 if (filteredFlags & NSAlphaShiftKeyMask)
                 {
-                    keyEvent.mButton = eFDHIDKeyCapsLock;
+                    keyEvent.mButton = FDHIDKeyCapsLock;
                     keyEvent.mBoolVal = (flags & NSAlphaShiftKeyMask) ? YES : NO;
                     
                     [self pushEvent: &keyEvent];
@@ -544,7 +544,7 @@ static const UInt8  sFDHIDInNumPadKey[] =
                 
                 if (filteredFlags & NSShiftKeyMask)
                 {
-                    keyEvent.mButton = eFDHIDKeyShift;
+                    keyEvent.mButton = FDHIDKeyShift;
                     keyEvent.mBoolVal = (flags & NSShiftKeyMask) ? YES : NO;
                     
                     [self pushEvent: &keyEvent];
@@ -552,7 +552,7 @@ static const UInt8  sFDHIDInNumPadKey[] =
                 
                 if (filteredFlags & NSControlKeyMask)
                 {
-                    keyEvent.mButton = eFDHIDKeyControl;
+                    keyEvent.mButton = FDHIDKeyControl;
                     keyEvent.mBoolVal = (flags & NSControlKeyMask) ? YES : NO;
                     
                     [self pushEvent: &keyEvent];
@@ -560,7 +560,7 @@ static const UInt8  sFDHIDInNumPadKey[] =
                 
                 if (filteredFlags & NSAlternateKeyMask)
                 {
-                    keyEvent.mButton = eFDHIDKeyOption;
+                    keyEvent.mButton = FDHIDKeyOption;
                     keyEvent.mBoolVal = (flags & NSAlternateKeyMask) ? YES : NO;
                     
                     [self pushEvent: &keyEvent];
@@ -568,7 +568,7 @@ static const UInt8  sFDHIDInNumPadKey[] =
                 
                 if (filteredFlags & NSCommandKeyMask)
                 {
-                    keyEvent.mButton = eFDHIDKeyCommand;
+                    keyEvent.mButton = FDHIDKeyCommand;
                     keyEvent.mBoolVal = (flags & NSCommandKeyMask) ? YES : NO;
                     
                     [self pushEvent: &keyEvent];
@@ -576,7 +576,7 @@ static const UInt8  sFDHIDInNumPadKey[] =
                 
                 if (filteredFlags & NSNumericPadKeyMask)
                 {
-                    keyEvent.mButton = eFDHIDKeyNumLock;
+                    keyEvent.mButton = FDHIDKeyNumLock;
                     keyEvent.mBoolVal = (flags & NSNumericPadKeyMask) ? YES : NO;
                     
                     [self pushEvent: &keyEvent];
@@ -617,7 +617,7 @@ void FDHIDKeyboard_FnHandler (_FDHIDDeviceKeyboard *device, unsigned int keycode
     FDHIDEvent  keyEvent = { 0 };
     
     keyEvent.mDevice    = device;
-    keyEvent.mType      = eFDHIDEventTypeKeyboard;
+    keyEvent.mType      = FDHIDEventTypeKeyboard;
     keyEvent.mBoolVal   = NO;
     
     [device setFnKeyState: (IOHIDValueGetIntegerValue (pValue) != 0)];

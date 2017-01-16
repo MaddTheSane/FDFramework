@@ -468,7 +468,7 @@ void FDAudioFile_CompletionProc (void* pUserData, ScheduledAudioFileRegion* pFil
 {
     FD_UNUSED (pFileRegion, result);
     
-    NSUInteger*  pStatus = (NSUInteger*) pUserData;
+    FDAudioFileStatus*  pStatus = (FDAudioFileStatus*) pUserData;
     
     if (pStatus != nil)
     {

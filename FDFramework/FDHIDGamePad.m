@@ -26,12 +26,12 @@ static void     FDHIDGamePad_ButtonHandler (FDHIDDevice *device, unsigned int, I
 
 static FDHIDButtonMap   sFDHIDDualPsxAxisMap[] =
 {
-    { kHIDUsage_GD_X,           eFDHIDGamePadAxisLeftX,     &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Y,           eFDHIDGamePadAxisLeftY,     &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Z,           eFDHIDGamePadAxisRightY,    &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_X,           FDHIDGamePadAxisLeftX,      &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Y,           FDHIDGamePadAxisLeftY,      &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Z,           FDHIDGamePadAxisRightY,     &FDHIDGamePad_AxisHandler   },
     { kHIDUsage_GD_Rx,          0,                          NULL                        },
     { kHIDUsage_GD_Ry,          0,                          NULL                        },
-    { kHIDUsage_GD_Rz,          eFDHIDGamePadAxisRightX,    &FDHIDGamePad_AxisHandler   }
+    { kHIDUsage_GD_Rz,          FDHIDGamePadAxisRightX,     &FDHIDGamePad_AxisHandler   }
 };
 
 static FDHIDButtonMap    sFDHIDDualPsxButtonMap[] =
@@ -64,12 +64,12 @@ static FDHIDElementMap  sFDHIDDualPsxMap[] =
 
 static FDHIDButtonMap   sFDHIDDualShock3AxisMap[] =
 {
-    { kHIDUsage_GD_X,           eFDHIDGamePadAxisLeftX,     &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Y,           eFDHIDGamePadAxisLeftY,     &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Z,           eFDHIDGamePadAxisRightX,    &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_X,           FDHIDGamePadAxisLeftX,      &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Y,           FDHIDGamePadAxisLeftY,      &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Z,           FDHIDGamePadAxisRightX,     &FDHIDGamePad_AxisHandler   },
     { kHIDUsage_GD_Rx,          0,                          NULL                        },
     { kHIDUsage_GD_Ry,          0,                          NULL                        },
-    { kHIDUsage_GD_Rz,          eFDHIDGamePadAxisRightY,    &FDHIDGamePad_AxisHandler   }
+    { kHIDUsage_GD_Rz,          FDHIDGamePadAxisRightY,     &FDHIDGamePad_AxisHandler   }
 };
 
 static FDHIDButtonMap   sFDHIDDualShock3ButtonMap[] =
@@ -105,11 +105,11 @@ static FDHIDElementMap  sFDHIDDualShock3Map[] =
 
 static FDHIDButtonMap   sFDHIDXbox360AxisMap[] =
 {
-    { kHIDUsage_GD_X,           eFDHIDGamePadAxisLeftX,     &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Y,           eFDHIDGamePadAxisLeftY,     &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_X,           FDHIDGamePadAxisLeftX,      &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Y,           FDHIDGamePadAxisLeftY,      &FDHIDGamePad_AxisHandler   },
     { kHIDUsage_GD_Z,           8,                          &FDHIDGamePad_ButtonHandler },
-    { kHIDUsage_GD_Rx,          eFDHIDGamePadAxisRightX,    &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Ry,          eFDHIDGamePadAxisRightY,    &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Rx,          FDHIDGamePadAxisRightX,     &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Ry,          FDHIDGamePadAxisRightY,     &FDHIDGamePad_AxisHandler   },
     { kHIDUsage_GD_Rz,          9,                          &FDHIDGamePad_ButtonHandler }
 };
 
@@ -142,12 +142,12 @@ static FDHIDElementMap  sFDHIDXbox360Map[] =
 
 static FDHIDButtonMap   sFDHIDDefaultGamePadAxisMap[] =
 {
-    { kHIDUsage_GD_X,           eFDHIDGamePadAxisLeftX,     &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Y,           eFDHIDGamePadAxisLeftY,     &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Z,           eFDHIDGamePadAxisLeftZ,     &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Rx,          eFDHIDGamePadAxisRightX,    &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Ry,          eFDHIDGamePadAxisRightY,    &FDHIDGamePad_AxisHandler   },
-    { kHIDUsage_GD_Rz,          eFDHIDGamePadAxisRightZ,    &FDHIDGamePad_AxisHandler   }
+    { kHIDUsage_GD_X,           FDHIDGamePadAxisLeftX,     &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Y,           FDHIDGamePadAxisLeftY,     &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Z,           FDHIDGamePadAxisLeftZ,     &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Rx,          FDHIDGamePadAxisRightX,    &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Ry,          FDHIDGamePadAxisRightY,    &FDHIDGamePad_AxisHandler   },
+    { kHIDUsage_GD_Rz,          FDHIDGamePadAxisRightZ,    &FDHIDGamePad_AxisHandler   }
 };
 
 static FDHIDButtonMap   sFDHIDDefaultGamePadButtonMap[] =
@@ -271,7 +271,7 @@ void FDHIDGamePad_AxisHandler (FDHIDDevice *device, unsigned int axis, IOHIDValu
     FDHIDEvent  event = { 0 };
     
     event.mDevice   = device;
-    event.mType     = eFDHIDEventTypeGamePadAxis;
+    event.mType     = FDHIDEventTypeGamePadAxis;
     event.mButton   = axis;
     event.mFloatVal = (FDHIDGamePad_GetValue (pValue, pElement) - 0.5f) * 2.0f;
     
@@ -288,7 +288,7 @@ void FDHIDGamePad_ButtonHandler (FDHIDDevice *device, unsigned int button, IOHID
     FDHIDEvent  event = { 0 };
     
     event.mDevice   = device;
-    event.mType     = eFDHIDEventTypeGamePadButton;
+    event.mType     = FDHIDEventTypeGamePadButton;
     event.mButton   = button;
     event.mBoolVal  = (FDHIDGamePad_GetValue (pValue, pElement) > 0.5f);
     

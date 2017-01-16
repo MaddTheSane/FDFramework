@@ -36,9 +36,9 @@ static NSString*        sDeviceFactories[]      = {
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-NSString*               FDHIDDeviceGamePad      = FD_HID_DEVICE_GAME_PAD;
-NSString*               FDHIDDeviceKeyboard     = FD_HID_DEVICE_KEYBOARD;
-NSString*               FDHIDDeviceMouse        = FD_HID_DEVICE_MOUSE;
+NSString*const          FDHIDDeviceGamePad      = FD_HID_DEVICE_GAME_PAD;
+NSString*const          FDHIDDeviceKeyboard     = FD_HID_DEVICE_KEYBOARD;
+NSString*const          FDHIDDeviceMouse        = FD_HID_DEVICE_MOUSE;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
