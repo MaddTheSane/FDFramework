@@ -31,6 +31,7 @@
 		5531D5191E282E8200BDBF21 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531D4CA1E2813DD00BDBF21 /* AudioUnit.framework */; };
 		5531D51A1E282E8700BDBF21 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531D4CC1E28142B00BDBF21 /* AudioToolbox.framework */; };
 		5531D51B1E282E8B00BDBF21 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5531D4D51E28147200BDBF21 /* Foundation.framework */; };
+		555B01371E2D7B0A007D3B5D /* FDDebugAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 555B01361E2D7B0A007D3B5D /* FDDebugAdditions.swift */; };
 		556478281CECEE1000ECD01B /* FruitzOfDojo.h in Headers */ = {isa = PBXBuildFile; fileRef = 556478271CECEE1000ECD01B /* FruitzOfDojo.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		556478571CECEE3300ECD01B /* FDAudioBuffer.h in Headers */ = {isa = PBXBuildFile; fileRef = 5564782F1CECEE3300ECD01B /* FDAudioBuffer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		556478581CECEE3300ECD01B /* FDAudioBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 556478301CECEE3300ECD01B /* FDAudioBuffer.m */; };
@@ -104,6 +105,7 @@
 		5531D5081E282D6000BDBF21 /* FDAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDAudio.h; sourceTree = "<group>"; };
 		5531D5091E282D6000BDBF21 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5531D5181E282E5900BDBF21 /* FDAudio.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = FDAudio.modulemap; sourceTree = "<group>"; };
+		555B01361E2D7B0A007D3B5D /* FDDebugAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDDebugAdditions.swift; sourceTree = "<group>"; };
 		556478241CECEE1000ECD01B /* FruitzOfDojo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FruitzOfDojo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		556478271CECEE1000ECD01B /* FruitzOfDojo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FruitzOfDojo.h; sourceTree = "<group>"; };
 		556478291CECEE1000ECD01B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				55F926181CED190E00145952 /* FDDisplayModeAdditions.swift */,
+				555B01361E2D7B0A007D3B5D /* FDDebugAdditions.swift */,
 				55F926121CED18F900145952 /* FruitzOfDojoSwift.h */,
 				55F926141CED18F900145952 /* Info.plist */,
 			);
@@ -529,6 +532,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				55F926191CED190E00145952 /* FDDisplayModeAdditions.swift in Sources */,
+				555B01371E2D7B0A007D3B5D /* FDDebugAdditions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,6 +779,7 @@
 				5531D50C1E282D6000BDBF21 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5564781E1CECEE1000ECD01B /* Build configuration list for PBXProject "FruitzOfDojo" */ = {
 			isa = XCConfigurationList;
