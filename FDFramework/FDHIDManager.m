@@ -42,7 +42,6 @@ NSString*const          FDHIDDeviceMouse        = FD_HID_DEVICE_MOUSE;
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static dispatch_once_t  sFDHIDManagerPredicate  = 0;
 static FDHIDManager*    sFDHIDManagerInstance   = nil;
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -80,7 +79,10 @@ static void             FDHIDManager_DeviceRemovalCallback (void*, IOReturn, voi
 
 + (FDHIDManager*) sharedHIDManager
 {
-    dispatch_once (&sFDHIDManagerPredicate, ^{ sFDHIDManagerInstance = [[FDHIDManager alloc] initSharedHIDManager]; });
+    if (!sFDHIDManagerInstance)
+    {
+        sFDHIDManagerInstance = [[FDHIDManager alloc] initSharedHIDManager];
+    }
     
     return sFDHIDManagerInstance;
 }

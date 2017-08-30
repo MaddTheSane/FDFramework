@@ -235,7 +235,7 @@ static NSString*        sFDDebugDefaultName = @"";
     {
         if (mpAssertHandler)
         {
-            const char* pFile   = [file cStringUsingEncoding: NSUTF8StringEncoding];
+            const char* pFile   = [file fileSystemRepresentation];
             const char* pMsg    = [msg cStringUsingEncoding: NSUTF8StringEncoding];
             
             resume = mpAssertHandler (pFile, (unsigned int) line, pMsg);
@@ -269,8 +269,10 @@ static NSString*        sFDDebugDefaultName = @"";
 
 + (FDDebug*) sharedDebug
 {
-    static dispatch_once_t  sFDDebugPredicate   = 0;
-    dispatch_once (&sFDDebugPredicate, ^{ sFDDebugInstance = [[FDDebug alloc] initWithName: sFDDebugDefaultName]; });
+    if (!sFDDebugInstance)
+    {
+        sFDDebugInstance = [[FDDebug alloc] initWithName: sFDDebugDefaultName];
+    }
     
     return sFDDebugInstance;
 }

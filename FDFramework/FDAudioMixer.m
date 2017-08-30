@@ -50,7 +50,10 @@ static FDAudioMixer*    sFDAudioMixerShared     = nil;
 
 + (FDAudioMixer*) sharedAudioMixer
 {
-    dispatch_once (&sFDAudioMixerPredicate, ^{ sFDAudioMixerShared = [[FDAudioMixer alloc] init]; });
+    if (!sFDAudioMixerShared)
+    {
+        sFDAudioMixerShared = [[FDAudioMixer alloc] init];
+    }
     
     return sFDAudioMixerShared;
 }

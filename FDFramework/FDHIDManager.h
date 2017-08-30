@@ -120,7 +120,7 @@ typedef NS_ENUM(int, FDHIDGamePadAxis)
 typedef struct
 {
     __unsafe_unretained FDHIDDevice*__nullable        mDevice;
-    enum FDHIDEventType mType;
+    FDHIDEventType      mType;
     unsigned int        mButton;
     
     union

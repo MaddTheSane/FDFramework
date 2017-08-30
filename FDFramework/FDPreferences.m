@@ -14,7 +14,6 @@
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-static dispatch_once_t  sFDPreferecncesPredicate = 0;
 static FDPreferences*   sFDPreferencesInstance  = nil;
 
 //----------------------------------------------------------------------------------------------------------------------------
@@ -33,7 +32,10 @@ static FDPreferences*   sFDPreferencesInstance  = nil;
 
 + (FDPreferences*) sharedPrefs
 {
-    dispatch_once (&sFDPreferecncesPredicate, ^{ sFDPreferencesInstance = [[self alloc] initSharedPreferences]; });
+    if (!sFDPreferencesInstance)
+    {
+        sFDPreferencesInstance = [[self alloc] initSharedPreferences];
+    }
     
     return sFDPreferencesInstance;
 }
