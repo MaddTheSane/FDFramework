@@ -204,7 +204,9 @@ static NSString*        sFDDebugDefaultName = @"";
         alert.informativeText = msg;
         alert.alertStyle = NSCriticalAlertStyle;
         [alert runModal];
+        [alert release];
     }
+    [msg release];
 }
 
 //----------------------------------------------------------------------------------------------------------------------------
