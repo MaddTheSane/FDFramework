@@ -157,7 +157,7 @@ typedef struct
  #define __API_R(rep,x) __attribute__((availability(__API_DEPRECATED_PLATFORM_##x,replacement=rep)))
 */
 #if __has_feature(attribute_availability_with_replacement)
-#define FD_OLD_ENUM(replace) API_DEPRECATED_WITH_REPLACEMENT( replace , macos(10.1, 10.10))
+#define FD_OLD_ENUM(replace) API_DEPRECATED_WITH_REPLACEMENT( replace , macos(10.1, 10.9))
 #else
 #define FD_OLD_ENUM(replace) DEPRECATED_ATTRIBUTE
 #endif

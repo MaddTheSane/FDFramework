@@ -56,9 +56,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (void) captureAllDisplays;
 + (void) releaseAllDisplays;
-+ (BOOL) isAnyDisplayCaptured;
 #if __has_feature(objc_class_property)
 @property (class, readonly, getter=isAnyDisplayCaptured) BOOL anyDisplayCaptured;
+#else
++ (BOOL) isAnyDisplayCaptured;
 #endif
 
 @end

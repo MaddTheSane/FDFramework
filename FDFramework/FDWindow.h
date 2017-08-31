@@ -15,11 +15,13 @@
 #define NS_SWIFT_NAME(...)
 #endif
 
+@class FDView;
+
 NS_ASSUME_NONNULL_BEGIN
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-typedef void (*FDResizeHandler) (id fdView, void*__nullable pContext);
+typedef void (*FDResizeHandler) (FDView *fdView, void*__nullable pContext);
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -30,6 +32,7 @@ typedef void (*FDResizeHandler) (id fdView, void*__nullable pContext);
 
 - (instancetype) initWithContentRect: (NSRect) rect;
 - (instancetype) initWithContentRect: (NSRect) rect samples: (NSUInteger) samples NS_DESIGNATED_INITIALIZER;
+- (instancetype) initWithContentRect: (NSRect) contentRect styleMask: (NSWindowStyleMask) style backing: (NSBackingStoreType) backingStoreType defer: (BOOL) flag UNAVAILABLE_ATTRIBUTE;
 
 - (void) setResizeHandler: (nullable FDResizeHandler) pResizeHandler forContext: (nullable void*) pContext;
 
