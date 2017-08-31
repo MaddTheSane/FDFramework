@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import FruitzOfDojo
+import FruitzOfDojo.FDDisplayMode
 
 extension FDDisplayMode: Comparable {
     
