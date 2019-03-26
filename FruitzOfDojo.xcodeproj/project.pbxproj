@@ -430,7 +430,7 @@
 		5564781B1CECEE1000ECD01B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "C.W. Betts";
 				TargetAttributes = {
 					5531D5051E282D6000BDBF21 = {
@@ -448,7 +448,7 @@
 			};
 			buildConfigurationList = 5564781E1CECEE1000ECD01B /* Build configuration list for PBXProject "FruitzOfDojo" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
