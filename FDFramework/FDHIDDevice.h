@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------------------------------------------------------------
 
-#import "FDHIDActuator.h"
+#import <FruitzOfDojo/FDHIDActuator.h>
 
 #import <Cocoa/Cocoa.h>
 

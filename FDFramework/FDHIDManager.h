@@ -7,8 +7,8 @@
 //
 //----------------------------------------------------------------------------------------------------------------------------
 
-#import "FDDefines.h"
-#import "FDHIDDevice.h"
+#import <FruitzOfDojo/FDDefines.h>
+#import <FruitzOfDojo/FDHIDDevice.h>
 
 #import <Cocoa/Cocoa.h>
 #include <IOKit/hid/IOHIDLib.h>

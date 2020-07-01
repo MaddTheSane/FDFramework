@@ -7,7 +7,7 @@
 //
 //----------------------------------------------------------------------------------------------------------------------------
 
-#import "FDDisplayMode.h"
+#import <FruitzOfDojo/FDDisplayMode.h>
 
 #import <Cocoa/Cocoa.h>
 
