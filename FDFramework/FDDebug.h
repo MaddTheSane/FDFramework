@@ -42,26 +42,26 @@ NS_ASSUME_NONNULL_BEGIN
 @property FDDebugLogHandler logHandler;
 
 - (void) logWithFormat: (NSString*) format, ... NS_FORMAT_FUNCTION(1,2);
-- (void) logWithFormat: (NSString*) format arguments: (va_list) argList;
+- (void) logWithFormat: (NSString*) format arguments: (va_list) argList NS_FORMAT_FUNCTION(1,0);
 
 - (void) errorWithFormat: (NSString*) format, ... NS_FORMAT_FUNCTION(1,2);
-- (void) errorWithFormat: (NSString*) format arguments: (va_list) argList;
+- (void) errorWithFormat: (NSString*) format arguments: (va_list) argList NS_FORMAT_FUNCTION(1,0);
 
 - (void) exception: (NSException*) exception;
 - (void) exceptionWithFormat: (NSString*) format, ... NS_FORMAT_FUNCTION(1,2);
-- (void) exceptionWithFormat: (NSString*) format arguments: (va_list) argList;
+- (void) exceptionWithFormat: (NSString*) format arguments: (va_list) argList NS_FORMAT_FUNCTION(1,0);
 
 - (BOOL) assert: (NSString*) file line: (NSUInteger) line format: (NSString*) format, ... NS_FORMAT_FUNCTION(3,4);
-- (BOOL) assert: (NSString*) file line: (NSUInteger) line format: (NSString*) format arguments: (va_list) argList;
+- (BOOL) assert: (NSString*) file line: (NSUInteger) line format: (NSString*) format arguments: (va_list) argList NS_FORMAT_FUNCTION(3,0);
 
 @end
 
 //----------------------------------------------------------------------------------------------------------------------------
 
 FD_EXTERN void    FDLog (NSString* format, ...) NS_FORMAT_FUNCTION(1,2);
-FD_EXTERN void    FDLogv (NSString* format, va_list list);
+FD_EXTERN void    FDLogv (NSString* format, va_list list) NS_FORMAT_FUNCTION(1,0);
 FD_EXTERN void    FDError (NSString* format, ...) NS_FORMAT_FUNCTION(1,2);
-FD_EXTERN void    FDErrorv (NSString* format, va_list list);
+FD_EXTERN void    FDErrorv (NSString* format, va_list list) NS_FORMAT_FUNCTION(1,0);
 
 NS_ASSUME_NONNULL_END
 
