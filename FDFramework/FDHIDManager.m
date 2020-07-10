@@ -22,6 +22,7 @@
 #define FD_HID_DEVICE_GAME_PAD      @"_FDHIDDeviceGamePad"
 #define FD_HID_DEVICE_KEYBOARD      @"_FDHIDDeviceKeyboard"
 #define FD_HID_DEVICE_MOUSE         @"_FDHIDDeviceMouse"
+#define FD_GC_DEVICE_GAME_PAD       @"_FDGCDeviceGamePad"
 
 #define FD_HID_LCC_IDENTIFIER       @"com.Logitech.Control Center.Daemon"
 #define FD_HID_LCC_SUPPRESS_WARNING @"LCCSuppressWarning"
@@ -29,6 +30,7 @@
 //----------------------------------------------------------------------------------------------------------------------------
 
 static NSString*        sDeviceFactories[]      = {
+                                                    FD_GC_DEVICE_GAME_PAD,
                                                     FD_HID_DEVICE_GAME_PAD,
                                                     FD_HID_DEVICE_KEYBOARD,
                                                     FD_HID_DEVICE_MOUSE

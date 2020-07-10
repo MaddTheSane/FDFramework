@@ -76,6 +76,13 @@
 		55F926131CED18F900145952 /* FruitzOfDojoSwift.h in Headers */ = {isa = PBXBuildFile; fileRef = 55F926121CED18F900145952 /* FruitzOfDojoSwift.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55F926191CED190E00145952 /* FDDisplayModeAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55F926181CED190E00145952 /* FDDisplayModeAdditions.swift */; };
 		55F9261C1CED194C00145952 /* FruitzOfDojo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 556478241CECEE1000ECD01B /* FruitzOfDojo.framework */; };
+		55FAFFBE24B90509003676C3 /* FDActuator.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FAFFBD24B90509003676C3 /* FDActuator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55FAFFC024B9058C003676C3 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FAFFBF24B9058C003676C3 /* GameController.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		55FAFFC324B905B8003676C3 /* FDGCActuator.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FAFFC124B905B8003676C3 /* FDGCActuator.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		55FAFFC424B905B8003676C3 /* FDGCActuator.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FAFFC224B905B8003676C3 /* FDGCActuator.m */; };
+		55FAFFC624B906FE003676C3 /* CoreHaptics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55FAFFC524B906FE003676C3 /* CoreHaptics.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		55FAFFC824B908DF003676C3 /* FDGCGamePad.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FAFFC724B908DF003676C3 /* FDGCGamePad.m */; };
+		55FAFFCA24B90A78003676C3 /* FDGCGamePad.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FAFFC924B90A78003676C3 /* FDGCGamePad.h */; };
 		55FE60071D4EC57900FBBA91 /* FDBundleVersion.h in Headers */ = {isa = PBXBuildFile; fileRef = 55FE60051D4EC57900FBBA91 /* FDBundleVersion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		55FE60081D4EC57900FBBA91 /* FDBundleVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 55FE60061D4EC57900FBBA91 /* FDBundleVersion.m */; };
 /* End PBXBuildFile section */
@@ -154,6 +161,13 @@
 		55F926121CED18F900145952 /* FruitzOfDojoSwift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FruitzOfDojoSwift.h; sourceTree = "<group>"; };
 		55F926141CED18F900145952 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		55F926181CED190E00145952 /* FDDisplayModeAdditions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FDDisplayModeAdditions.swift; sourceTree = "<group>"; };
+		55FAFFBD24B90509003676C3 /* FDActuator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDActuator.h; sourceTree = "<group>"; };
+		55FAFFBF24B9058C003676C3 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
+		55FAFFC124B905B8003676C3 /* FDGCActuator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDGCActuator.h; sourceTree = "<group>"; };
+		55FAFFC224B905B8003676C3 /* FDGCActuator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDGCActuator.m; sourceTree = "<group>"; };
+		55FAFFC524B906FE003676C3 /* CoreHaptics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreHaptics.framework; path = System/Library/Frameworks/CoreHaptics.framework; sourceTree = SDKROOT; };
+		55FAFFC724B908DF003676C3 /* FDGCGamePad.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FDGCGamePad.m; sourceTree = "<group>"; };
+		55FAFFC924B90A78003676C3 /* FDGCGamePad.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FDGCGamePad.h; sourceTree = "<group>"; };
 		55FE60051D4EC57900FBBA91 /* FDBundleVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FDBundleVersion.h; sourceTree = "<group>"; };
 		55FE60061D4EC57900FBBA91 /* FDBundleVersion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FDBundleVersion.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -173,6 +187,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55FAFFC624B906FE003676C3 /* CoreHaptics.framework in Frameworks */,
+				55FAFFC024B9058C003676C3 /* GameController.framework in Frameworks */,
 				5531D4DB1E28147C00BDBF21 /* Cocoa.framework in Frameworks */,
 				5531D4CF1E28143100BDBF21 /* ForceFeedback.framework in Frameworks */,
 				5531D4D31E28144900BDBF21 /* OpenGL.framework in Frameworks */,
@@ -200,6 +216,8 @@
 		5531D4C91E2813DD00BDBF21 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				55FAFFC524B906FE003676C3 /* CoreHaptics.framework */,
+				55FAFFBF24B9058C003676C3 /* GameController.framework */,
 				5531D4D81E28147700BDBF21 /* AppKit.framework */,
 				5531D4DC1E2814D500BDBF21 /* ApplicationServices.framework */,
 				5531D4CC1E28142B00BDBF21 /* AudioToolbox.framework */,
@@ -267,6 +285,11 @@
 				5564783C1CECEE3300ECD01B /* FDDisplayMode.m */,
 				5564783E1CECEE3300ECD01B /* FDGLScreenshot.h */,
 				5564783F1CECEE3300ECD01B /* FDGLScreenshot.m */,
+				55FAFFBD24B90509003676C3 /* FDActuator.h */,
+				55FAFFC124B905B8003676C3 /* FDGCActuator.h */,
+				55FAFFC224B905B8003676C3 /* FDGCActuator.m */,
+				55FAFFC924B90A78003676C3 /* FDGCGamePad.h */,
+				55FAFFC724B908DF003676C3 /* FDGCGamePad.m */,
 				556478401CECEE3300ECD01B /* FDHIDActuator.h */,
 				556478411CECEE3300ECD01B /* FDHIDActuator.m */,
 				556478421CECEE3300ECD01B /* FDHIDDevice.h */,
@@ -338,7 +361,9 @@
 				5564786F1CECEE3300ECD01B /* FDHIDManager.h in Headers */,
 				5564785B1CECEE3300ECD01B /* FDAudioInternal.h in Headers */,
 				5564787C1CECEE3300ECD01B /* FDViewInternal.h in Headers */,
+				55FAFFCA24B90A78003676C3 /* FDGCGamePad.h in Headers */,
 				556478781CECEE3300ECD01B /* FDScreenshot.h in Headers */,
+				55FAFFBE24B90509003676C3 /* FDActuator.h in Headers */,
 				556478721CECEE3300ECD01B /* FDLinkView.h in Headers */,
 				556478611CECEE3300ECD01B /* FDDisplay.h in Headers */,
 				556478761CECEE3300ECD01B /* FDPreferences.h in Headers */,
@@ -353,6 +378,7 @@
 				5564786D1CECEE3300ECD01B /* FDHIDInternal.h in Headers */,
 				5564785C1CECEE3300ECD01B /* FDAudioMixer.h in Headers */,
 				556478681CECEE3300ECD01B /* FDHIDActuator.h in Headers */,
+				55FAFFC324B905B8003676C3 /* FDGCActuator.h in Headers */,
 				5564787D1CECEE3300ECD01B /* FDWindow.h in Headers */,
 				5564787A1CECEE3300ECD01B /* FDView.h in Headers */,
 			);
@@ -430,6 +456,7 @@
 		5564781B1CECEE1000ECD01B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = FD;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "C.W. Betts";
 				TargetAttributes = {
@@ -518,9 +545,11 @@
 				556478691CECEE3300ECD01B /* FDHIDActuator.m in Sources */,
 				556478791CECEE3300ECD01B /* FDScreenshot.m in Sources */,
 				556478751CECEE3300ECD01B /* FDModifierCheck.m in Sources */,
+				55FAFFC424B905B8003676C3 /* FDGCActuator.m in Sources */,
 				556478701CECEE3300ECD01B /* FDHIDManager.m in Sources */,
 				55FE60081D4EC57900FBBA91 /* FDBundleVersion.m in Sources */,
 				556478621CECEE3300ECD01B /* FDDisplay.m in Sources */,
+				55FAFFC824B908DF003676C3 /* FDGCGamePad.m in Sources */,
 				556478581CECEE3300ECD01B /* FDAudioBuffer.m in Sources */,
 				5564787E1CECEE3300ECD01B /* FDWindow.m in Sources */,
 				556478671CECEE3300ECD01B /* FDGLScreenshot.m in Sources */,
@@ -639,7 +668,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -693,7 +722,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

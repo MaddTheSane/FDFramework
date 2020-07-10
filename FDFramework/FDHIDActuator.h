@@ -8,10 +8,11 @@
 //----------------------------------------------------------------------------------------------------------------------------
 
 #import <Cocoa/Cocoa.h>
+#import <FruitzOfDojo/FDActuator.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
-@interface FDHIDActuator : NSObject
+@interface FDHIDActuator : NSObject <FDActuator>
 
 @property float intensity;
 @property float duration;

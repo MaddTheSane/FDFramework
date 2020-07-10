@@ -10,11 +10,15 @@
 #import "FDHIDDevice.h"
 #import "FDHIDManager.h"
 #import "FDHIDActuator.h"
+#import "FDGCGamePad.h"
+#import "FDGCActuator.h"
 
 #import <Cocoa/Cocoa.h>
 #include <ForceFeedback/ForceFeedback.h>
 #include <IOKit/hidsystem/IOHIDLib.h>
 #include <IOKit/hid/IOHIDLib.h>
+#import <GameController/GameController.h>
+#import <CoreHaptics/CoreHaptics.h>
 
 //----------------------------------------------------------------------------------------------------------------------------
 
@@ -109,6 +113,15 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (nullable instancetype) initWithDevice: (FDHIDDevice*) device;
+
+@end
+
+@interface FDGCActuator()
+{
+    CHHapticEngine *engine;
+}
+
+- (nullable instancetype) initWithDevice: (_FDGCDeviceGamePad*) device;
 
 @end
 
