@@ -20,12 +20,12 @@ typedef NSUInteger (*FDAudioBufferCallback) (void* __null_unspecified pDst, NSUI
 @interface FDAudioBuffer : NSObject
 
 - (nonnull instancetype)init UNAVAILABLE_ATTRIBUTE;
-- (nullable instancetype) initWithMixer: (nullable FDAudioMixer*) mixer
-                     frequency: (NSUInteger) frequency
-                bitsPerChannel: (NSUInteger) bitsPerChannel
-                      channels: (NSUInteger) channels
-                      callback: (nullable FDAudioBufferCallback) pCallback
-                       context: (nullable void*) pContext NS_DESIGNATED_INITIALIZER;
+- (nullable instancetype)initWithMixer: (nullable FDAudioMixer*) mixer
+                             frequency: (NSUInteger) frequency
+                        bitsPerChannel: (NSUInteger) bitsPerChannel
+                              channels: (NSUInteger) channels
+                              callback: (nullable FDAudioBufferCallback) pCallback
+                               context: (nullable void*) pContext NS_DESIGNATED_INITIALIZER;
 
 @property float volume;
 

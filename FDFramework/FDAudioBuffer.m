@@ -55,11 +55,11 @@ static OSStatus FDAudioBuffer_AudioUnitCallback (void*, AudioUnitRenderActionFla
 //----------------------------------------------------------------------------------------------------------------------------
 
 - (instancetype) initWithMixer: (FDAudioMixer*) mixer
-           frequency: (NSUInteger) frequency
-      bitsPerChannel: (NSUInteger) bitsPerChannel
-            channels: (NSUInteger) numChannels
-            callback: (FDAudioBufferCallback) pCallback
-             context: (void*) pContext
+                     frequency: (NSUInteger) frequency
+                bitsPerChannel: (NSUInteger) bitsPerChannel
+                      channels: (NSUInteger) numChannels
+                      callback: (FDAudioBufferCallback) pCallback
+                       context: (void*) pContext
 {
     self = [super init];
     
