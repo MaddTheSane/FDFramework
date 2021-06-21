@@ -10,17 +10,15 @@ import Foundation
 import FruitzOfDojo.FDDisplayMode
 
 extension FDDisplayMode: Comparable {
-    
-}
-
-public func ==(lhs: FDDisplayMode, rhs: FDDisplayMode) -> Bool {
-    return lhs.isEqual(to: rhs)
-}
-
-public func <(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
-    return lhs.compare(rhs) == .orderedAscending
-}
-
-public func >(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
-    return lhs.compare(rhs) == .orderedDescending
+	static public func ==(lhs: FDDisplayMode, rhs: FDDisplayMode) -> Bool {
+		return lhs.isEqual(to: rhs)
+	}
+	
+	static public func <(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
+		return lhs.compare(rhs) == .orderedAscending
+	}
+	
+	static public func >(lhs:FDDisplayMode, rhs: FDDisplayMode) -> Bool {
+		return lhs.compare(rhs) == .orderedDescending
+	}
 }
